@@ -56,7 +56,13 @@ process.on('exit', () => {
 });
 
 const defaultGet: AsyncRoute = async (request, response) => {
-  response.json(request.body);
+  const list = await SerialPort.list();
+  const currentState = {
+    availablePorts: list,
+    port: sPort,
+    portIsOpen: port.isOpen,
+  };
+  response.json(currentState);
 };
 
 const defaultCommandPost: AsyncRoute = async (request, response) => {
