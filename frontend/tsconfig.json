@@ -1,0 +1,35 @@
+{
+  "exclude": [
+    "node_modules",
+    "__tests__",
+    ".vscode"
+  ],
+  "include": [
+    "./src/**/*"
+  ],
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "commonjs",
+    "lib": [
+      "es5",
+      "es6",
+      "es2018",
+      "dom",
+      "es2018.promise"
+    ],
+    "outDir": "./dist/",
+    "rootDir": "./src/",
+    "downlevelIteration": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  }
+}

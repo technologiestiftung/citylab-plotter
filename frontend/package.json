@@ -1,0 +1,27 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel src/index.html -d dist",
+    "parcel": "parcel"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@types/got": "^9.4.4",
+    "@types/superagent": "^4.1.1",
+    "parcel-bundler": "^1.12.3",
+    "sass": "^1.20.1",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "superagent": "^5.0.5",
+    "whatwg-fetch": "^3.0.0"
+  }
+}

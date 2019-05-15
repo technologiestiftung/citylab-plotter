@@ -1,0 +1,46 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>Page Title</title>
+  <meta name="description" content="something">
+  <meta name="author" content="me">
+
+  <link rel="stylesheet" type="text/css" href="./index.scss">
+
+</head>
+<body>
+  <main>
+    <h1>hello CityLAB plotter !?!!</h1>
+    <section class="staus">
+
+    </section>
+    <section class="buttons">
+      <button class="button" id="home"> home `$H`</button>
+      <button class="button" id="unlock"> eks `$x`</button>
+      <button class="button" id="connect"> connect `$H`</button>
+      <button class="button" id="disconnect"> disconnect `$x`</button>
+    </section>
+    <section class="controls">
+      <form method="post" id="single" >
+        <input type="text" name="serial" id="serial" class="input--single"><br>
+        <input type="button" value="send" class="button--single">
+      </form>
+
+      <form method="post" id="multi">
+          <textarea rows="5" cols="60" name="multiline" class="input--multi"></textarea><br>
+           <input type="button" value="send" class="button--multi">
+        </form>
+
+    </section>
+    <section class="responses">
+    </section>
+  </main>
+  <script type="text/javascript" src="./index.ts"></script>
+
+</body>
+</html>

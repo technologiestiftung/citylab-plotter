@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "backend"
+		},
+		{
+			"path": "frontend"
+		},
+		{
+			"path": "firmware"
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			"activityBar.background": "#d05dab",
+			"activityBar.foreground": "#15202b",
+			"activityBar.inactiveForeground": "#15202b99",
+			"activityBarBadge.background": "#b2d46b",
+			"activityBarBadge.foreground": "#15202b",
+			"titleBar.activeBackground": "#c23896",
+			"titleBar.inactiveBackground": "#c2389699",
+			"titleBar.activeForeground": "#e7e7e7",
+			"titleBar.inactiveForeground": "#e7e7e799",
+			"statusBar.background": "#c23896",
+			"statusBarItem.hoverBackground": "#d05dab",
+			"statusBar.foreground": "#e7e7e7"
+		}
+	}
+}
