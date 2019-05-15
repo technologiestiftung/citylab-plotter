@@ -8,7 +8,6 @@ import { IResponse } from './common/interfaces';
 import { AsyncRoute } from './common/types';
 import { WS } from './websocket';
 
-let portIsOpen = false;
 const sPort = process.env.SERIAL_PORT || '/dev/tty.usbmodem143201';
 const port = new SerialPort(sPort, {
   autoOpen: false,
@@ -21,7 +20,7 @@ const parser = port.pipe(new Readline(/*{ delimiter: '\n' }*/));
 
 port.on('open', () => {
   console.log('port is open');
-  portIsOpen = true;
+  // portIsOpen = true;
 });
 
 // Open errors will be emitted as an error event
@@ -94,7 +93,7 @@ const home: AsyncRoute = async (_request, response) => {
 };
 
 const unlock: AsyncRoute = async (_request, response) => {
-  response.json({ message: 'home', success: true });
+  response.json({ message: 'unlock', success: true });
 };
 
 const connect: AsyncRoute = async (request, response) => {
