@@ -45,6 +45,16 @@ parser.on('data', (data: string) => {
   WS.emitter.emit('send', data);
 
 });
+
+process.on('exit', () => {
+  console.log('About to close');
+  port.close((err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+});
+
 const defaultGet: AsyncRoute = async (request, response) => {
   response.json(request.body);
 };
