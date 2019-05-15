@@ -2,6 +2,7 @@ dist/
 .vscode
 flussgygiene-utils/
 .env
+!.env.example
 # Logs
 logs
 *.log

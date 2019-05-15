@@ -19,9 +19,9 @@ const responseRender: (obj: IObject, target: HTMLElement) => void = (obj, target
   target.prepend(pre);
 }
 
-const postCommands = async (ele: HTMLTextAreaElement | HTMLInputElement, targetElement: HTMLElement) => {
+const postCommands = async (ele: HTMLTextAreaElement | HTMLInputElement, targetElement: HTMLElement, suffix?: string) => {
   try {
-    const commands = ele.value;
+    const commands =  suffix === undefined ? ele.value : `${ele.value}${suffix}`;
     const res = await superagent.post(apiUrl).send({ command: commands });
     responseRender(res.body, targetElement);
   } catch (error) {
@@ -83,6 +83,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const area: HTMLTextAreaElement | null = document.querySelector('textarea.input--multi');
         if (area !== null) {
           area.value = area.value.replace(/\n\s*\n/g, '\n');
+          area.value = area.value.replace(/^\s+/g, '');
+          if(area.value.endsWith('\n') === false){
+            area.value = `${area.value}\n`;
+          }
           postCommands(area, target!);
         } else {
           console.log('could not find textarea');
@@ -94,8 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
       inputSingle.addEventListener('keypress', (event) => {
         var key = event.charCode || event.keyCode || 0;
         if (key == 13) {
-          inputSingle.value += '\n';
-          postCommands(inputSingle, target!);
+          inputSingle.value;
+          postCommands(inputSingle, target!, '\n');
         }
       });
     }
@@ -105,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const input: HTMLInputElement | null = document.querySelector('input.input--single');
         if (input !== null) {
-          input.value += '\n';
-          postCommands(input, target!);
+          input.value;
+          postCommands(input, target!, '\n');
         }
       });
     }
