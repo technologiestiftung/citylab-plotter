@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const area: HTMLTextAreaElement | null = document.querySelector('textarea.input--multi');
         if (area !== null) {
+          area.value = area.value.replace(/\n\s*\n/g, '\n');
           postCommands(area, target!);
         } else {
           console.log('could not find textarea');
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
       inputSingle.addEventListener('keypress', (event) => {
         var key = event.charCode || event.keyCode || 0;
         if (key == 13) {
+          inputSingle.value += '\n';
           postCommands(inputSingle, target!);
         }
       });
@@ -103,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const input: HTMLInputElement | null = document.querySelector('input.input--single');
         if (input !== null) {
+          input.value += '\n';
           postCommands(input, target!);
         }
       });
