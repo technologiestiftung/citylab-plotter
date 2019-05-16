@@ -55,7 +55,7 @@ const apiState = (state: object = {}, action: any) => {
 const responses = (state: object[] = [], action: any) => {
   switch (action.type) {
     case POST_DATA_RECEIVED:
-    console.log('POST_DATA response', action.body);
+    // console.log('POST_DATA response', action.body);
     return [action.body, ...state];
     default:
     return state;
@@ -65,8 +65,8 @@ const responses = (state: object[] = [], action: any) => {
 
 export const reducers = combineReducers({
   // connected,
-  apiState,
-  def,
+  // apiState,
+  // def,
   errors,
   responses,
 });

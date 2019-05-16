@@ -13,6 +13,12 @@ main {
   section{
     padding-bottom: 2em;
   }
+  section.stati{
+    display: flex;
+    .status--element{
+      padding: 1em;
+    }
+  }
   section.buttons{
     display: flex;
   }
