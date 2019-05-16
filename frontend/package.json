@@ -18,6 +18,7 @@
     "@types/superagent": "^4.1.1",
     "parcel-bundler": "^1.12.3",
     "sass": "^1.20.1",
+    "tslint": "^5.16.0",
     "typescript": "^3.4.5"
   },
   "dependencies": {

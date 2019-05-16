@@ -1,17 +1,6 @@
 import { GET_DATA, POST_DATA } from './action-types';
+import { IOption, IParseError } from '../common/interfaces';
 
-interface IOption {
-  method: string;
-  url: string;
-  async: boolean;
-  type?: string;
-  body?: object;
-}
-
-interface IParseError {
-  raw: string;
-  err: Error;
-}
 const defaultOptions = { method: 'GET', url: `http://${location.hostname}:${process.env.API_PORT}`, async: true, type: 'DEFAULT' };
 
 const request = (next: any) => (opts?: IOption) => {
