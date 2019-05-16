@@ -12,7 +12,7 @@ interface IParseError {
   raw: string;
   err: Error;
 }
-const defaultOptions = { method: 'GET', url: '', async: true, type: 'DEFAULT' };
+const defaultOptions = { method: 'GET', url: `http://${location.hostname}:${process.env.API_PORT}`, async: true, type: 'DEFAULT' };
 
 const request = (next: any) => (opts?: IOption) => {
 
@@ -27,10 +27,10 @@ const request = (next: any) => (opts?: IOption) => {
       let responseText: object | IParseError;
       try {
         responseText = JSON.parse(xhr.responseText);
-        console.log(responseText);
+        // console.log(responseText);
       } catch (err) {
         // tslint:disable-next-line:no-console
-        console.log(err);
+        console.error(err);
         responseText = { raw: xhr.responseText, err };
       }
       if (xhr.status === 200) {
@@ -39,7 +39,7 @@ const request = (next: any) => (opts?: IOption) => {
         // follow this action to
         // the response for the POST request actually
         // lands on neverland…
-        console.log(`${option.type}_RECEIVED`);
+        // console.log(`${option.type}_RECEIVED`);
 
         return next({
           body: responseText,
@@ -82,11 +82,11 @@ export const middleware: IMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case GET_DATA:
       // tslint:disable-next-line:no-console
-      console.log(action, ' in middleware');
+      // console.log(action, ' in middleware');
       req({
         async: true,
         method: 'GET',
-        url: `http://${location.hostname}:${process.env.API_PORT}`,
+        url: action.url === undefined ? `http://${location.hostname}:${process.env.API_PORT}` : action.url,
         type: GET_DATA,
       });
       break;
@@ -95,7 +95,7 @@ export const middleware: IMiddleware = (store) => (next) => (action) => {
         async: true,
         body: action.body,
         method: 'POST',
-        url: `http://${location.hostname}:${process.env.API_PORT}`,
+        url: action.url === undefined ? `http://${location.hostname}:${process.env.API_PORT}` : action.url,
         type: POST_DATA,
       });
       break;
