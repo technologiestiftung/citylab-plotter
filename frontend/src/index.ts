@@ -80,6 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const buttonSingle: HTMLButtonElement | null = document.querySelector('input.button--single');
   const inputSingle: HTMLInputElement | null = document.querySelector('input.input--single');
   const buttonConnect: HTMLButtonElement | null = document.querySelector('button#connect');
+  const buttonHomeing: HTMLButtonElement | null = document.querySelector('button#homeing');
+  const buttonUnlock: HTMLButtonElement | null = document.querySelector('button#unlock');
   const buttonDisconnect: HTMLButtonElement | null = document.querySelector('button#disconnect');
   const responseTarget: HTMLElement | null = document.querySelector('section.responses');
 
@@ -93,13 +95,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (buttonConnect !== null) {
       buttonConnect.addEventListener('click', (event) => {
         event.preventDefault();
-        store.dispatch(postData({ connect: true }, `${apiUrl}/connect`))
+        store.dispatch(postData({ connect: true }, `${apiUrl}/connect`));
       });
     }
     if (buttonDisconnect !== null) {
       buttonDisconnect.addEventListener('click', (event) => {
         event.preventDefault();
-        store.dispatch(postData({ connect: false }, `${apiUrl}/disconnect`))
+        store.dispatch(postData({ connect: false }, `${apiUrl}/disconnect`));
+      });
+    }
+    if (buttonHomeing !== null) {
+      buttonHomeing.addEventListener('click', (event) => {
+        event.preventDefault();
+        store.dispatch(postData({}, `${apiUrl}/home`));
+      });
+    }
+    if (buttonUnlock !== null) {
+      buttonUnlock.addEventListener('click', (event) => {
+        event.preventDefault();
+        store.dispatch(postData({}, `${apiUrl}/unlock`));
       });
     }
     if (buttonMultiline !== null) {
@@ -113,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             area.value = `${area.value}\n`;
           }
           const commands = area.value;
-          store.dispatch(postData({ command: commands }, `${apiUrl}`))
+          store.dispatch(postData({ command: commands }, `${apiUrl}`));
         } else {
           console.error('could not find textarea');
         }
