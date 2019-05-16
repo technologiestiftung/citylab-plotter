@@ -122,37 +122,57 @@ const defaultCommandPost: AsyncRoute = async (request, response) => {
 
   }
 };
-const home: AsyncRoute = async (_request, response) => {
-  // const res: IResponse = {};
 
+const controlCommander: AsyncRoute = async (request, response) => {
+  console.log(request.params);
   if (port.isOpen === true) {
-    port.write(ControlCommands.home, async (err) => {
+    let cmd: string = '';
+    switch (request.params.cmd) {
+      case 'home':
+        cmd = ControlCommands.home;
+        break;
+      case 'unlock':
+        cmd = ControlCommands.unlock;
+        break;
+      case 'disconnect':
+      break;
+      case 'connect':
+      break;
+    }
+    // console.log('control command is', cmd);
+
+    port.write(cmd, async (err) => {
       if (err) {
-        // res.message = err.message;
-        // res.success = false;
         response.status(400).json(await responsePayload(err, false));
       }
-      // res.message = `Executed Command: ${ControlCommands.home}`;
-      // res.success = true;
-      response.json(await responsePayload(`Executed command: ${ControlCommands.home}`, true));
+      response.json(await responsePayload(`Executed command: ${cmd}`, true));
     });
   }
-  // response.json({ message: 'home', success: true });
 };
+// const home: AsyncRoute = async (_request, response) => {
+//   // const res: IResponse = {};
 
-const unlock: AsyncRoute = async (_request, response) => {
-  response.json(await responsePayload('unlock not inplemented yet', true));
-};
+//   if (port.isOpen === true) {
+//     port.write(ControlCommands.home, async (err) => {
+//       if (err) {
+//         // res.message = err.message;
+//         // res.success = false;
+//         response.status(400).json(await responsePayload(err, false));
+//       }
+//       // res.message = `Executed Command: ${ControlCommands.home}`;
+//       // res.success = true;
+//       response.json(await responsePayload(`Executed command: ${ControlCommands.home}`, true));
+//     });
+//   }
+//   // response.json({ message: 'home', success: true });
+// };
+
+// const unlock: AsyncRoute = async (_request, response) => {
+//   response.json(await responsePayload('unlock not inplemented yet', true));
+// };
 
 const connect: AsyncRoute = async (request, response) => {
   if (request.body.connect !== undefined && typeof request.body.connect === 'boolean') {
-    // const payload: IResponse = {
-    //   message: '',
-    //   success: false,
-    // };
-
-    const con = request.body.connect;
-    if (con === true) {
       if (port.isOpen === false) {
         port.open(async (err) => {
           if (err) {
@@ -166,20 +186,6 @@ const connect: AsyncRoute = async (request, response) => {
       } else {
         response.json(await responsePayload('Already connected', true));
       }
-    } else if (con === false) {
-      if (port.isOpen === true) {
-        port.close(async (err) => {
-          if (err) {
-            console.log(err);
-            response.json(await responsePayload(err, false));
-          } else {
-            response.json(await responsePayload('Disconnected', true));
-          }
-        });
-      } else {
-        response.json(await responsePayload('already disconnected', true));
-      }
-    }
   }
 };
 
@@ -209,8 +215,9 @@ const disconnect: AsyncRoute = async (request, response) => {
 
 router.get('/', defaultGet);
 router.post('/', defaultCommandPost);
-router.post('/connect', connect);
-router.post('/disconnect', disconnect);
-router.post('/home', home);
-router.post('/unlock', unlock);
+router.post('/commands/connect', connect);
+router.post('/commands/disconnect', disconnect);
+// router.post('/commands/:cmd(home|unlock)?', controlCommander);
+router.post('/commands/:cmd([a-z]+)?', controlCommander);
+// router.post('/unlock', unlock);
 export default router;
