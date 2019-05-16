@@ -12,10 +12,10 @@ import { WS } from './websocket';
 
 const sPort = process.env.SERIAL_PORT || '/dev/tty.usbmodem143201';
 
-let currentState: IAppState = {
-  currentPort: sPort,
-  portIsOpen: false,
-};
+// let currentState: IAppState = {
+//   currentPort: sPort,
+//   portIsOpen: false,
+// };
 const port = new SerialPort(sPort, {
   autoOpen: false,
   baudRate: 9600,
@@ -27,7 +27,7 @@ const parser = port.pipe(new Readline(/*{ delimiter: '\n' }*/));
 
 port.on('open', () => {
   console.log('port is open');
-  currentState.portIsOpen = true;
+  // currentState.portIsOpen = true;
   // portIsOpen = true;
 });
 
@@ -58,29 +58,45 @@ process.on('exit', () => {
     if (err) {
       console.error(err);
     } else {
-      currentState.portIsOpen = false;
+      // currentState.portIsOpen = false;
       console.info('Port is closed');
     }
   });
 });
 
-const responsePayload: (message: string|Error, success: boolean) => IResponse = (message, success) => {
+const getCurrentState: () => Promise<IAppState> = async () => {
+  try {
+    const list = await SerialPort.list();
+    const state: IAppState = {
+      availablePorts: list,
+      currentPort: sPort,
+      portIsOpen: port.isOpen,
+    };
+    return state;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const responsePayload: (message: string | Error, success: boolean) => Promise<IResponse> = async (message, success) => {
+  const currentState = await getCurrentState();
+  // console.log('state in responsePayload before setting it', currentState);
   const res: IResponse = {
     appState: currentState,
-    message : message instanceof Error ? message.message : message,
+    message: message instanceof Error ? message.message : message,
     success,
   };
   return res;
 };
 
 const defaultGet: AsyncRoute = async (request, response) => {
-  const list = await SerialPort.list();
-  currentState = {
-    availablePorts: list,
-    currentPort: sPort,
-    portIsOpen: port.isOpen,
-  };
-  response.json(responsePayload('Appliction State', true));
+  // const list = await SerialPort.list();
+  // currentState = {
+  //   availablePorts: list,
+  //   currentPort: sPort,
+  //   portIsOpen: port.isOpen,
+  // };
+  response.json(await responsePayload('Appliction State', true));
 };
 
 const defaultCommandPost: AsyncRoute = async (request, response) => {
@@ -88,41 +104,44 @@ const defaultCommandPost: AsyncRoute = async (request, response) => {
   if (request.body.hasOwnProperty('command') === true && typeof request.body.command === 'string') {
     if (port.isOpen === true) {
 
-      port.write(request.body.command, (err) => {
+      port.write(request.body.command, async (err) => {
         if (err) {
 
-          response.status(400).json(responsePayload(err, true));
+          response.status(400).json(await responsePayload(err, true));
         } else {
           response.json(
-            responsePayload(`Executed command: ${request.body.command}`, true),
-            );
+            await responsePayload(`Executed command: ${request.body.command}`, true),
+          );
         }
       });
     } else {
-      response.status(400).json(responsePayload('Not connected', false));
+      response.status(400).json(await responsePayload('Not connected', false));
     }
+  } else if (request.body.hasOwnProperty('getAppState') === true) {
+    response.json(await responsePayload('Application state:', true));
+
   }
 };
 const home: AsyncRoute = async (_request, response) => {
   // const res: IResponse = {};
 
   if (port.isOpen === true) {
-    port.write(ControlCommands.home, (err) => {
+    port.write(ControlCommands.home, async (err) => {
       if (err) {
         // res.message = err.message;
         // res.success = false;
-        response.status(400).json(responsePayload(err, false));
+        response.status(400).json(await responsePayload(err, false));
       }
       // res.message = `Executed Command: ${ControlCommands.home}`;
       // res.success = true;
-      response.json(responsePayload(`Executed command: ${ControlCommands.home}`, true));
+      response.json(await responsePayload(`Executed command: ${ControlCommands.home}`, true));
     });
   }
   // response.json({ message: 'home', success: true });
 };
 
 const unlock: AsyncRoute = async (_request, response) => {
-  response.json(responsePayload('unlock not inplemented yet', true));
+  response.json(await responsePayload('unlock not inplemented yet', true));
 };
 
 const connect: AsyncRoute = async (request, response) => {
@@ -135,52 +154,56 @@ const connect: AsyncRoute = async (request, response) => {
     const con = request.body.connect;
     if (con === true) {
       if (port.isOpen === false) {
-        port.open((err) => {
+        port.open(async (err) => {
           if (err) {
             console.error(err);
-            response.json(responsePayload(err, false));
+            response.json(await responsePayload(err, false));
           } else {
-            currentState.portIsOpen = port.isOpen;
-            response.json(responsePayload('Connected', true));
+            // currentState.portIsOpen = port.isOpen;
+            response.json(await responsePayload('Connected', true));
           }
         });
       } else {
-        response.json(responsePayload('Already connected', true));
+        response.json(await responsePayload('Already connected', true));
       }
     } else if (con === false) {
       if (port.isOpen === true) {
-        port.close((err) => {
+        port.close(async (err) => {
           if (err) {
             console.log(err);
-            response.json(responsePayload(err, false));
+            response.json(await responsePayload(err, false));
           } else {
-            response.json(responsePayload('Disconnected', true));
+            response.json(await responsePayload('Disconnected', true));
           }
         });
       } else {
-        response.json(responsePayload('already disconnected', true));
+        response.json(await responsePayload('already disconnected', true));
       }
     }
   }
 };
 
 const disconnect: AsyncRoute = async (request, response) => {
-  // const res: IResponse = {};
+
   if (port.isOpen === true) {
-    port.close((err) => {
+    port.close(async (err) => {
       if (err) {
         // res.message = err.message;
         // res.success = false;
-        response.status(400).json(responsePayload(err, false));
+        response.status(400).json(await responsePayload(err, false));
       }
       // res.message = 'Disconnected';
       // res.success = true;
-      response.json(responsePayload('Disconnected', true));
+      // currentState.portIsOpen  = port.isOpen;
+      console.log('Disconnected port');
+      response.json(await responsePayload('Disconnected', true));
+
     });
   } else {
     // res.message = 'Not connected';
     // res.success = false;
-    response.json(responsePayload('Not connected', true));
+    console.log('port not connected');
+    response.json(await responsePayload('Not connected', true));
   }
 };
 
