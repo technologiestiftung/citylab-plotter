@@ -1,4 +1,4 @@
-# CityLAB Plotter
+# [CityLAB](https://citylab-berlin.org/) Plotter
 
 Controlling a plotter [conucon 3DTwin XYZ](https://www.conucon.de/openbuilds/3dtwin-xyz-linearfuehrung-500x500m-mit-usb-cnc-schrittmotor-steuerung-und-software_2000006_1076) with Node over Serialport.  
 
