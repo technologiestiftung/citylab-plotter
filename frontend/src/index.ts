@@ -1,8 +1,10 @@
 import 'babel-polyfill'; // needed for ie11 should be the first things
 import 'whatwg-fetch'; // needed for ie11 should be the first things
 import superagent from 'superagent';
-import { async } from 'q';
 const apiUrl = 'http://localhost:3000';
+import {store} from './store/store';
+import { triggerConnect, getData } from './store/actions';
+
 
 const ws: WebSocket = new WebSocket(`ws://localhost:3000`);
 
@@ -44,6 +46,7 @@ const post = async (path: string, data: IObject, targetElement: HTMLElement) => 
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  store.dispatch(getData());
   const singleForm: HTMLFormElement | null = document.querySelector('form#single');
 
   singleForm!.onsubmit = function (_e: any) {
@@ -74,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (buttonConnect !== null) {
       buttonConnect.addEventListener('click', (event) => {
         event.preventDefault();
+        // store.dispatch(triggerConnect());
         post('connect', { connect: true }, target!);
       });
     }
