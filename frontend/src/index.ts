@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (buttonConnect !== null) {
       buttonConnect.addEventListener('click', (event) => {
         event.preventDefault();
-        store.dispatch(triggerConnect());
+        // store.dispatch(triggerConnect());
         post('connect', { connect: true }, target!);
       });
     }
