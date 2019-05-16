@@ -1,16 +1,6 @@
 import { DEFAULT, GET_DATA, POST_DATA, CONNECT } from './action-types';
+import { IObject, IAction, IPostAction } from '../common/interfaces';
 
-interface IAction {
-  type: string;
-  url?: string;
-}
-interface IObject {
-  [key: string]: any;
-}
-interface IPostAction extends IAction {
-  body: IObject;
-  // url?: string;
-}
 export const triggerDefault = (): IAction => {
   // console.log('trigger DEFAULT');
   return {type: DEFAULT};
