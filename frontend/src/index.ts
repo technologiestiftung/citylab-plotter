@@ -95,25 +95,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (buttonConnect !== null) {
       buttonConnect.addEventListener('click', (event) => {
         event.preventDefault();
-        store.dispatch(postData({ connect: true }, `${apiUrl}/connect`));
+        store.dispatch(postData({ connect: true }, `${apiUrl}/commands/connect`));
       });
     }
     if (buttonDisconnect !== null) {
       buttonDisconnect.addEventListener('click', (event) => {
         event.preventDefault();
-        store.dispatch(postData({ connect: false }, `${apiUrl}/disconnect`));
+        store.dispatch(postData({ connect: false }, `${apiUrl}/commands/disconnect`));
       });
     }
     if (buttonHomeing !== null) {
       buttonHomeing.addEventListener('click', (event) => {
         event.preventDefault();
-        store.dispatch(postData({}, `${apiUrl}/home`));
+        store.dispatch(postData({}, `${apiUrl}/commands/home`));
       });
     }
     if (buttonUnlock !== null) {
       buttonUnlock.addEventListener('click', (event) => {
         event.preventDefault();
-        store.dispatch(postData({}, `${apiUrl}/unlock`));
+        store.dispatch(postData({}, `${apiUrl}/commands/unlock`));
       });
     }
     if (buttonMultiline !== null) {

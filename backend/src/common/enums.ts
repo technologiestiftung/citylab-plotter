@@ -1,3 +1,4 @@
 export enum ControlCommands {
-  home = '$H',
+  home = '$H\n',
+  unlock = '$x\n',
 }
