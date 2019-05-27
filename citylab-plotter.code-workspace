@@ -8,6 +8,15 @@
 		},
 		{
 			"path": "firmware"
+		},
+		{
+			"path": "examples"
+		},
+		{
+			"path": "fiddle"
+		},
+		{
+			"path": "verify-gcode"
 		}
 	],
 	"settings": {

@@ -1,0 +1,21 @@
+{
+  "name": "svg-to-gcode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsdom": "^15.1.0",
+    "svgcode": "^1.0.1",
+    "xmldom": "^0.1.27"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-unobtrusive": "^1.2.2"
+  }
+}
