@@ -11,7 +11,7 @@ const opts = {
 
 const gcode = svgcode()
   // .loadFile(path.resolve(__dirname, './in-svg/A4-rect-1010_200200.svg'))
-  .loadFile(path.resolve(__dirname, './in-svg/town-01.svg'))
+  .loadFile(path.resolve(__dirname, './in-svg/town-a0-841-1189.svg'))
   .setOptions(opts)
   .generateGcode()
   .getGcode();
