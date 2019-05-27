@@ -1,0 +1,3 @@
+[submodule "verify-gcode/yagv"]
+	path = verify-gcode/yagv
+	url = git@github.com:jonathanwin/yagv.git

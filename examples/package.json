@@ -1,0 +1,16 @@
+{
+  "name": "@tsb/citylab-plotter__examples",
+  "version": "1.0.0",
+  "description": "Mostly for testing purpose",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "svg2gcode": "svg2gcode"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "svg2gcode": "0.0.5"
+  }
+}
