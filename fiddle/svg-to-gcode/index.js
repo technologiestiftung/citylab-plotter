@@ -29,17 +29,17 @@ const gcode = svgcode()
   .generateGcode()
   .getGcode();
 
-gcode.unshift('G0 Z10'); // lift at start
+gcode.splice(3,0,'G0 Z10'); // insert a lift at start after the first three elements
 gcode.push('G0 Z10'); // left the pen at the end
 gcode.push('G0 X0 Y0'); // Go Home again
 gcode.forEach((ele, i, arr) => {
   arr[i] = ele.replace('Z0','Z1');
 });
 console.log(gcode);
-fs.writeFile(outFile, gcode.join('\n'), 'utf8', (err, data) => {
+fs.writeFile(outFile, gcode.join('\n'), 'utf8', (err) => {
   if (err) {
     throw err;
   }
-  console.log(data);
+  // console.log(data);
 
 });

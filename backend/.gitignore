@@ -108,3 +108,10 @@ $RECYCLE.BIN/
 .Trash-*
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
+
+lerna-debug.log*
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+*.lcov
+# TypeScript cache
+*.tsbuildinfo
