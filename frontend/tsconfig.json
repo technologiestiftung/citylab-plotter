@@ -8,10 +8,9 @@
     "./src/**/*"
   ],
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ES2018",
     "module": "commonjs",
     "lib": [
-      "es5",
       "es6",
       "es2018",
       "dom",

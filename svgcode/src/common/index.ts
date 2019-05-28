@@ -18,7 +18,7 @@ export enum GCodeCommands {
 export interface ISvgcode {
   gCode: string[];
   gctx: IObject;
-  svgFile: string | Document | undefined;
+  svgFile: string | undefined;
   // loadFile: (input: string) => ISvgcode;
   setDriver: (input: any) => ISvgcode;
   setOptions: (input: IObject) => ISvgcode;

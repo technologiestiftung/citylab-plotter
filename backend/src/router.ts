@@ -1,14 +1,29 @@
 // import { IResponse } from './common/interfaces';
+import {svgcode} from '@tsb/svgcode';
 import Router from 'express-promise-router';
 import { IAppState } from './common/interfaces';
 const router = Router();
 import Readline from '@serialport/parser-readline';
 import SerialPort from 'serialport';
 
+import fs from 'fs';
+import multer from 'multer';
+import util from 'util';
 import { ControlCommands } from './common/enums';
 import { IResponse } from './common/interfaces';
 import { AsyncRoute } from './common/types';
 import { WS } from './websocket';
+
+const readFileAsync = util.promisify(fs.readFile);
+
+const storage = multer.diskStorage({
+  destination: 'uploads/',
+  filename:  (_req, file, cb) =>  {
+    const nameSplit = file.originalname.split('.');
+    cb(null, `${nameSplit[0]}-${Date.now()}.${nameSplit[nameSplit.length - 1]}`);
+  },
+});
+const upload = multer({ storage });
 
 const sPort = process.env.SERIAL_PORT || '/dev/tty.usbmodem143201';
 
@@ -172,6 +187,8 @@ const controlCommander: AsyncRoute = async (request, response) => {
 // };
 
 const connect: AsyncRoute = async (request, response) => {
+  console.log('call /command/connect');
+  console.log(request.body);
   if (request.body.connect !== undefined && typeof request.body.connect === 'boolean') {
       if (port.isOpen === false) {
         port.open(async (err) => {
@@ -212,9 +229,29 @@ const disconnect: AsyncRoute = async (request, response) => {
     response.json(await responsePayload('Not connected', true));
   }
 };
+const uploadSVG: AsyncRoute =  async (request, response) => {
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+  console.log('file', request.file);
+  const opts = {
+    // depth: 9,
+    // unit: 'mm',
+    // map: 'xyz',
+    // top: -10
+  };
+  const fileContent = await readFileAsync(request.file.path, 'utf8');
+  const gcode = svgcode()
+  // .loadFile(inFile)
+  .setSvg(fileContent)
+  .setOptions(opts)
+  .generateGcode()
+  .getGcode();
+  response.json(await responsePayload(JSON.stringify({gcode}), true));
+};
 
 router.get('/', defaultGet);
 router.post('/', defaultCommandPost);
+router.post('/uploadsvg', upload.single('file'), uploadSVG);
 router.post('/commands/connect', connect);
 router.post('/commands/disconnect', disconnect);
 // router.post('/commands/:cmd(home|unlock)?', controlCommander);

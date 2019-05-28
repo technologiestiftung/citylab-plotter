@@ -19,6 +19,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(router);
+
 app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
   res.status(404).send(`Sorry 404 on ${req.url}`);
 });
