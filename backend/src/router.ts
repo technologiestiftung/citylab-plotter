@@ -115,9 +115,9 @@ const defaultGet: AsyncRoute = async (request, response) => {
 };
 
 const defaultCommandPost: AsyncRoute = async (request, response) => {
-  console.log(request.body);
   if (request.body.hasOwnProperty('command') === true && typeof request.body.command === 'string') {
     if (port.isOpen === true) {
+      console.log(request.body.command);
 
       port.write(request.body.command, async (err) => {
         if (err) {
