@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "gsim": "0.0.6",
     "jsdom": "^15.1.0",
     "meow": "^5.0.0",
     "svgcode": "^1.0.1",
