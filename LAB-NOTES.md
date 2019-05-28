@@ -76,3 +76,44 @@ G0 X0 Y0
 | **8**  | 52 x 74 mm    |
 | **9**  | 37 x 52 mm    |
 | **10** | 26 x 37 mm    |
+
+
+## Messages from MCU
+
+on startup 
+
+```plain
+state = Init
+conucon controller 1811
+state = Alarm
+'$H'|'$X' to unlock
+```
+
+while in action
+
+```plain
+MPos = 10.480,12.720,1.040
+WPos = 10.480,12.720,1.040
+MPos = 10.480,10.880,1.040
+WPos = 10.480,10.880,1.040
+finished : 0
+state = Idle
+bufferr = 4: 0
+MPos = 10.480,10.480,1.040
+WPos = 10.480,10.480,1.040
+```
+
+after homing
+
+```
+MPos = 0.960,0.960,0.960
+WPos = 0.960,0.960,0.960
+finished : 0
+state = Idle
+bufferr = 4: 0
+Position zero
+MPos = 1.040,1.040,1.040
+WPos = 1.040,1.040,1.040
+MPos = 1.040,1.040,1.040
+WPos = 1.040,1.040,1.040
+```
