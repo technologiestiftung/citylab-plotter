@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p .",
     "watch": "tsc -p . -w",
-    "postinstall": "npm run build"
+    "prepublish": "npm run build"
   },
   "keywords": [],
   "author": "Fabian Morón Zirfas",
