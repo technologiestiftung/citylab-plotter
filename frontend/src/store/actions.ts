@@ -18,4 +18,3 @@ export const getData = (url?: string): IAction => {
 export const postData = (body: IObject, url?: string): IPostAction => {
   return {type: POST_DATA, body, url};
 };
-

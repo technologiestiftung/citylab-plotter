@@ -25,6 +25,7 @@
       </div>
 
     </section>
+    <h2>Plotter controlls</h2>
     <section class="buttons">
       <button class="button" id="homeing"> homeing `$H`</button>
       <button class="button" id="unlock"> unlock `$x`</button>
@@ -32,16 +33,23 @@
       <button class="button" id="disconnect"> disconnect</button>
     </section>
     <section class="controls">
+      <h2>Send single GCode commands</h2>
       <form method="post" id="single" >
         <input type="text" name="serial" id="serial" class="input--single"><br>
         <input type="button" value="send" class="button--single">
       </form>
-
+      <h2>Send multiline GCode commands</h2>
+      <p>All  double blank lines will be removed</p>
       <form method="post" id="multi">
-          <textarea rows="5" cols="60" name="multiline" class="input--multi"></textarea><br>
+          <textarea rows="5" cols="60" name="multiline" class="input--multi" id="textarea--multi"></textarea><br>
            <input type="button" value="send" class="button--multi">
         </form>
+      <h2>Upload SVG file</h2>
+      <form id="svgupload" method="post" name="uploadsvg" enctype="multipart/form-data">
+        <input type="file" name="file" id="file"/>
+        <input type="button" value="Upload a file" class="button--upload"/>
 
+      </form>
     </section>
     <section class="responses">
     </section>

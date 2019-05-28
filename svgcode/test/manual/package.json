@@ -1,5 +1,5 @@
 {
-  "name": "svg-to-gcode",
+  "name": "manual",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,13 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jsdom": "^15.1.0",
-    "meow": "^5.0.0",
-    "svgcode": "^1.0.1",
-    "xmldom": "^0.1.27"
-  },
-  "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-unobtrusive": "^1.2.2"
+    "meow": "^5.0.0"
   }
 }

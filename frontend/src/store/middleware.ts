@@ -1,15 +1,21 @@
-import { GET_DATA, POST_DATA } from './action-types';
 import { IOption, IParseError } from '../common/interfaces';
+import { GET_DATA, POST_DATA } from './action-types';
 
-const defaultOptions = { method: 'GET', url: `http://${location.hostname}:${process.env.API_PORT}`, async: true, type: 'DEFAULT' };
+const defaultOptions = {
+  async: true,
+  method: 'GET',
+  type: 'DEFAULT',
+  url: `http://${location.hostname}:${process.env.API_PORT}`,
+};
 
 const request = (next: any) => (opts?: IOption) => {
-
 
   const option = Object.assign({}, defaultOptions, opts);
   const xhr: XMLHttpRequest = new XMLHttpRequest();
   xhr.open(option.method, option.url, true);
-  xhr.setRequestHeader('Content-type', 'application/json');
+  if (option.formData === undefined) {
+    xhr.setRequestHeader('Content-type', 'application/json');
+  }
 
   xhr.onreadystatechange = () => {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -50,12 +56,20 @@ const request = (next: any) => (opts?: IOption) => {
     }
   };
   // if we have a body
-  if (option.body !== undefined) {
+  if (option.body !== undefined || option.formData !== undefined) {
     // console.log('send with body');
     // send it
     // this is POST
     // console.log(option.body);
-    xhr.send(JSON.stringify(option.body));
+    if (option.formData !== undefined) {
+      console.log('Sending from data');
+      console.log(option.formData);
+      xhr.send(option.formData);
+    } else {
+      console.log(option.body);
+      xhr.send(JSON.stringify(option.body));
+    }
+
   } else {
     // if we have no body we are making a GET request
     xhr.send();
@@ -75,21 +89,22 @@ export const middleware: IMiddleware = (store) => (next) => (action) => {
       req({
         async: true,
         method: 'GET',
-        url: action.url === undefined ? `http://${location.hostname}:${process.env.API_PORT}` : action.url,
         type: GET_DATA,
+        url: action.url === undefined ? `http://${location.hostname}:${process.env.API_PORT}` : action.url,
       });
       break;
     case POST_DATA:
+      console.log(action);
       req({
         async: true,
         body: action.body,
+        formData: action.body.formData !== undefined ? action.body.formData : undefined,
         method: 'POST',
-        url: action.url === undefined ? `http://${location.hostname}:${process.env.API_PORT}` : action.url,
         type: POST_DATA,
+        url: action.url === undefined ? `http://${location.hostname}:${process.env.API_PORT}` : action.url,
       });
       break;
     default:
       break;
   }
 };
-
