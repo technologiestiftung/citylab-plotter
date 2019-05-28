@@ -24,6 +24,7 @@ void loop(){
     // look for the next valid integer in the incoming serial stream:
     val = Serial.read();
     Serial.print(val);
+    
 
 
     // look for the newline. That's the end of your

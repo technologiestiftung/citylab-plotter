@@ -63,7 +63,12 @@ port.on('error', (err) => {
 
 parser.on('data', (data: string) => {
   // console.log(typeof data);
-  console.log('Message from MCU', data);
+  console.log('Message from MCU:');
+  console.log(data);
+  if(data === ': finished : 0'){
+    console.log(': finished : 0');
+    console.log('ready for next command');
+  }
   WS.emitter.emit('send', data);
 });
 
