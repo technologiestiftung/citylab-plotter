@@ -31,7 +31,7 @@ commandBuffer.on('command', (cmd) => {
     currentCommand = cmd;
   }
   if (currentCommand === undefined) {
-    WS.emitter.emit('send', { plotterState: PlotterStates.ready });
+    WS.emitter.emit('send', [{ plotterState: PlotterStates.ready }]);
     return;
   }
   if (currentCommand.endsWith('\n') === false) {
@@ -135,7 +135,7 @@ const defaultCommandPost: AsyncRoute = async (request, response) => {
     if (port.isOpen === true) {
       console.log(request.body.commands);
       commandBuffer.emitCommand();
-      WS.emitter.emit('send', { plotterState: PlotterStates.busy });
+      WS.emitter.emit('send', [{ plotterState: PlotterStates.busy }]);
       response.json(
         await responsePayload(`Executing commands: ${request.body.command}`, true),
       );
