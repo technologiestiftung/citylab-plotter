@@ -1,6 +1,5 @@
 G90
 G21
-(tooldiameter=1)
 G0 Z10
 G0 X10.5 Y10.5
 G0 Z10
