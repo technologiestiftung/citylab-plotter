@@ -131,9 +131,9 @@ export const getCurrentState: () => Promise<IAppState> = async () => {
 };
 
 const defaultCommandPost: AsyncRoute = async (request, response) => {
-  if (request.body.hasOwnProperty('command') === true && typeof request.body.command === 'string') {
+  if (request.body.hasOwnProperty('commands') === true ) {
     if (port.isOpen === true) {
-      console.log(request.body.command);
+      console.log(request.body.commands);
       commandBuffer.emitCommand();
       WS.emitter.emit('send', { plotterState: PlotterStates.busy });
       response.json(
@@ -189,6 +189,7 @@ const connect: AsyncRoute = async (request, response) => {
           response.json(await responsePayload(err, false));
         } else {
           // currentState.portIsOpen = port.isOpen;
+          commandBuffer.state = PlotterStates.ready;
           response.json(await responsePayload('Connected', true));
         }
       });
@@ -198,7 +199,7 @@ const connect: AsyncRoute = async (request, response) => {
   }
 };
 
-const disconnect: AsyncRoute = async (request, response) => {
+const disconnect: AsyncRoute = async (_request, response) => {
 
   if (port.isOpen === true) {
     port.close(async (err) => {
@@ -211,6 +212,7 @@ const disconnect: AsyncRoute = async (request, response) => {
       // res.success = true;
       // currentState.portIsOpen  = port.isOpen;
       console.log('Disconnected port');
+      commandBuffer.state = PlotterStates.ready;
       response.json(await responsePayload('Disconnected', true));
 
     });
