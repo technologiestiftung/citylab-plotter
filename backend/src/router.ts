@@ -1,20 +1,20 @@
 
 // import { IResponse } from './common/interfaces';
-const router = Router();
-import { AsyncRoute } from './common/types';
+// import fs from 'fs';
+import Readline from '@serialport/parser-readline';
+import Router from 'express-promise-router';
+import multer from 'multer';
+import SerialPort from 'serialport';
 import { CommandBuffer } from './CommandBuffer';
 import { ControlCommands, PlotterStates } from './common/enums';
-import { defaultGet } from './route-handlers/default-get';
 import { IAppState } from './common/interfaces';
+import { AsyncRoute } from './common/types';
+import { defaultGet } from './route-handlers/default-get';
 import { responsePayload } from './route-handlers/response-payload';
 import { uploadSVG } from './route-handlers/upload-svg';
 import { WS } from './websocket';
-// import fs from 'fs';
-import multer from 'multer';
-import Readline from '@serialport/parser-readline';
-import Router from 'express-promise-router';
-import SerialPort from 'serialport';
-// import util from 'util';
+
+const router = Router();
 
 // const readFileAsync = util.promisify(fs.readFile);
 const commandBuffer = new CommandBuffer();
