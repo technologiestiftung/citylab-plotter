@@ -2,7 +2,7 @@ import canvg from 'canvg';
 // import fs, { PathLike } from 'fs';
 import Gcanvas from 'gcanvas';
 import { Stream } from 'stream';
-import {  GCodeCommands, IDefaultOptions, IObject, ISvgcode } from './common';
+import { GCodeCommands, IDefaultOptions, IObject, ISvgcode } from './common';
 
 // totally ripped from
 // https://github.com/piLeoni/svgcode
@@ -71,6 +71,13 @@ export const svgcode = () => {
       this.gCode.forEach((ele, i, arr) => {
         arr[i] = ele.replace('Z0', 'Z1');
       });
+
+      for (var i = 0; i < this.gCode.length; i++) {
+        if (this.gCode[i].match(/\(.*?\)/) !== null) {
+          this.gCode.splice(i, 1);
+          i--;
+        }
+      }
       return this.gCode;
     },
   };

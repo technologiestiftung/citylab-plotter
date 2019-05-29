@@ -22,8 +22,8 @@ let gotMCUFinished = false;
 let gotMCUStateIdle = false;
 
 commandBuffer.on('command', (cmd) => {
-  // console.log(`Hello`);
-  // console.log(commandBuffer.commands[0]);
+  console.log(`Executing commands`);
+  console.log(commandBuffer.commands[0]);
   let currentCommand: string = '';
   if (cmd === undefined) {
     currentCommand = commandBuffer.commands[0];
@@ -83,8 +83,8 @@ port.on('error', (err) => {
 
 parser.on('data', (data: string) => {
   // console.log(typeof data);
-  console.log('Message from MCU:');
-  console.log(data);
+  console.log('Message from MCU:', data);
+  // console.log(data);
   if (data.trim() === ': finished : 0') {
     console.log('Got: finished : 0');
     gotMCUFinished = true;
@@ -134,7 +134,10 @@ const defaultCommandPost: AsyncRoute = async (request, response) => {
 
   if (request.body.hasOwnProperty('commands') === true ) {
     if (port.isOpen === true) {
-      console.log(request.body.commands);
+      console.log('Commands from client:', request.body.commands);
+      if(Array.isArray(request.body.commands) === true){
+        commandBuffer.commands = [...request.body.commands];
+      }
       commandBuffer.emitCommand();
       WS.emitter.emit('send', [{ plotterState: PlotterStates.busy }]);
       response.json(
