@@ -71,7 +71,6 @@ port.on('open', () => {
 const app = express();
 const router = Router();
 /**
-
  * ## Request With payload
  * curl -X "POST" "http://localhost:3000" \
  *      -H 'Content-Type: application/json; charset=utf-8' \
@@ -81,8 +80,7 @@ const router = Router();
  *     "bah",
  *     "baz"
  *   ]
-}'
-
+ * }'
  */
 router.post('/', async (request, response) => {
   try {

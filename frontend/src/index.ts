@@ -138,8 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
           if (area.value.endsWith('\n') === false) {
             area.value = `${area.value}\n`;
           }
-          const commands = area.value;
-          store.dispatch(postData({ command: commands }, `${apiUrl}`));
+          const commands = area.value.split('\n');
+          store.dispatch(postData({ commands }, `${apiUrl}`));
         } else {
           console.error('could not find textarea');
         }
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const key = event.charCode || event.keyCode || 0;
         if (key === 13) {
           // inputSingle.value;
-          store.dispatch(postData({ command: `${inputSingle.value}\n` }, `${apiUrl}`));
+          store.dispatch(postData({ commands: [`${inputSingle.value}\n`] }, `${apiUrl}`));
         }
       });
     }
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const input: HTMLInputElement | null = document.querySelector('input.input--single');
         if (input !== null) {
           // input.value;
-          store.dispatch(postData({ command: `${input.value}\n` }, `${apiUrl}`));
+          store.dispatch(postData({ commands: [`${input.value}\n`] }, `${apiUrl}`));
         }
       });
     }
