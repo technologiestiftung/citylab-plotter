@@ -131,15 +131,17 @@ export const getCurrentState: () => Promise<IAppState> = async () => {
 };
 
 const defaultCommandPost: AsyncRoute = async (request, response) => {
+
   if (request.body.hasOwnProperty('commands') === true ) {
     if (port.isOpen === true) {
       console.log(request.body.commands);
       commandBuffer.emitCommand();
       WS.emitter.emit('send', [{ plotterState: PlotterStates.busy }]);
       response.json(
-        await responsePayload(`Executing commands: ${request.body.command}`, true),
+        await responsePayload(`Executing commands: ${request.body.commands}`, true),
       );
     } else {
+      console.log('You are not connected');
       response.status(400).json(await responsePayload('Not connected', false));
     }
   } else if (request.body.hasOwnProperty('getAppState') === true) {
