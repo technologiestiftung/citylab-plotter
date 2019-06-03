@@ -72,7 +72,7 @@ export const svgcode = () => {
         arr[i] = ele.replace('Z0', 'Z1');
       });
 
-      for (var i = 0; i < this.gCode.length; i++) {
+      for (let i = 0; i < this.gCode.length; i++) {
         if (this.gCode[i].match(/\(.*?\)/) !== null) {
           this.gCode.splice(i, 1);
           i--;
