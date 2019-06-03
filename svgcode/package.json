@@ -13,7 +13,6 @@
   "author": "Fabian Morón Zirfas",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^12.0.2",
     "canvas": "^2.5.0",
     "canvg": "^2.0.0",
     "gcanvas": "0.0.37",
@@ -21,6 +20,7 @@
     "xmldom": "^0.1.27"
   },
   "devDependencies": {
+    "@types/node": "^12.0.3",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
   }
