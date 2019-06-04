@@ -5,7 +5,7 @@ const defaultOptions = {
   async: true,
   method: 'GET',
   type: 'DEFAULT',
-  url: `http://${location.hostname}:${process.env.API_PORT}`,
+  url: `http://${window.location.hostname}:${process.env.API_PORT}`,
 };
 
 const request = (next: any) => (opts?: IOption) => {
@@ -90,7 +90,7 @@ export const middleware: IMiddleware = (store) => (next) => (action) => {
         async: true,
         method: 'GET',
         type: GET_DATA,
-        url: action.url === undefined ? `http://${location.hostname}:${process.env.API_PORT}` : action.url,
+        url: action.url === undefined ? `http://${window.location.hostname}:${process.env.API_PORT}` : action.url,
       });
       break;
     case POST_DATA:
@@ -101,7 +101,7 @@ export const middleware: IMiddleware = (store) => (next) => (action) => {
         formData: action.body.formData !== undefined ? action.body.formData : undefined,
         method: 'POST',
         type: POST_DATA,
-        url: action.url === undefined ? `http://${location.hostname}:${process.env.API_PORT}` : action.url,
+        url: action.url === undefined ? `http://${window.location.hostname}:${process.env.API_PORT}` : action.url,
       });
       break;
     default:

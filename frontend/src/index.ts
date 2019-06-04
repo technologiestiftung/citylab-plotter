@@ -1,12 +1,13 @@
 import 'babel-polyfill'; // needed for ie11 should be the first things
 import 'whatwg-fetch'; // needed for ie11 should be the first things
 // import superagent from 'superagent';
-const apiUrl = `http://localhost:${process.env.API_PORT}`;
+
+const apiUrl = `http://${window.location.hostname}:${process.env.API_PORT}`;
 import { IObject } from './common/interfaces';
 import { postData } from './store/actions';
 import { store } from './store/store';
 
-const ws: WebSocket = new WebSocket(`ws://localhost:${process.env.API_PORT}`);
+const ws: WebSocket = new WebSocket(`ws://${window.location.hostname}:${process.env.API_PORT}`);
 
 const responseRender: (obj: IObject, target: HTMLElement) => void = (obj, target) => {
   const pre = document.createElement('pre');
@@ -77,6 +78,8 @@ const render = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  // const host = window.location.hostname;
+
   store.subscribe(render);
   // store.dispatch(getData());
   store.dispatch(postData({ getAppState: 'foo' }, `${apiUrl}`));
