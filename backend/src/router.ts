@@ -165,17 +165,16 @@ const controlCommander: AsyncRoute = async (request, response) => {
       case 'home':
         cmd = ControlCommands.home;
         commandBuffer.emitCommand(cmd);
-
         break;
       case 'unlock':
         cmd = ControlCommands.unlock;
         commandBuffer.emitCommand(cmd);
-
         break;
       case 'zeroall':
-          commandBuffer.commands = [ControlCommands.zerox0, ControlCommands.zeroy0, ControlCommands.zeroz3];
-          commandBuffer.emitCommand();
-          WS.emitter.emit('send', [{ plotterState: PlotterStates.busy }]);
+        commandBuffer.commands = [ControlCommands.zerox0, ControlCommands.zeroy0, 'z3\n', ControlCommands.zeroz3];
+        commandBuffer.emitCommand();
+        WS.emitter.emit('send', [{ plotterState: PlotterStates.busy }]);
+        break;
       case 'disconnect':
         break;
       case 'connect':
@@ -183,7 +182,7 @@ const controlCommander: AsyncRoute = async (request, response) => {
         break;
     }
     // console.log('control command is', cmd);
-    commandBuffer.emitCommand(cmd);
+    // commandBuffer.emitCommand(cmd);
     response.json(await responsePayload(`Executed command: ${cmd}`, true));
     // port.write(cmd, async (err) => {
     //   if (err) {
