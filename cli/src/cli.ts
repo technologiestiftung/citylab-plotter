@@ -181,7 +181,6 @@ const main = async () => {
         let outFile: string | undefined;
         if (cli.flags.outfile === undefined) {
           outFile = `${inFile.replace('.svg', '.gc')}`;
-
         } else {
           outFile = path.resolve(process.cwd(), cli.flags.outfile);
         }
