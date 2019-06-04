@@ -41,6 +41,9 @@ commandBuffer.on('command', (cmd) => {
     if (error) {
       console.error(error);
     } else {
+      setTimeout(()=>{
+        
+      },300);
       commandBuffer.unshiftCommand();
       console.info(bytes);
     }
