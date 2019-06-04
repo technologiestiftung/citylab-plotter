@@ -89,6 +89,14 @@ state = Alarm
 '$H'|'$X' to unlock
 ```
 
+Set 0 pos at current location:
+
+```plain
+g92y0
+g92x0
+g92z0
+```
+
 while in action
 
 ```plain
