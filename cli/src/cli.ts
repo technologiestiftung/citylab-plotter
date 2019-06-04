@@ -24,6 +24,7 @@ const main = async () => {
     -p --portpath {string} Path to serial port
     -c --convert {string} Path to SVG file. Will convert to GCODE
          and write to the same location
+    --outfile {string} Path to output file for --convert
     --home {boolean} send homeing command $H
     --host {string} Host domain default is ${host}
          (can be set via env varialbe EXPRESS_HOST)
@@ -59,6 +60,9 @@ const main = async () => {
         open: {
           alias: 'o',
           type: 'boolean',
+        },
+        outfile: {
+          type: 'string',
         },
         portpath: {
           alias: 'p',
@@ -162,7 +166,7 @@ const main = async () => {
         }
       }
       console.log(gcode);
-      const res = await superagent.post(`${host}`).send({commands: gcode});
+      const res = await superagent.post(`${host}`).send({ commands: gcode });
       console.log(res.text);
 
     } catch (error) {
@@ -174,8 +178,13 @@ const main = async () => {
     try {
       const inFile = path.resolve(process.cwd(), cli.flags.convert);
       if (fs.statSync(inFile)) {
+        let outFile: string | undefined;
+        if (cli.flags.outfile === undefined) {
+          outFile = `${inFile.replace('.svg', '.gc')}`;
 
-        const outFile = `${inFile.replace('.svg', '.gc')}`;
+        } else {
+          outFile = path.resolve(process.cwd(), cli.flags.outfile);
+        }
         // console.log(outFile);
         const svg = fs.readFileSync(inFile, 'utf8');
         const gcode = svgcode()
@@ -185,7 +194,7 @@ const main = async () => {
           .setOptions(opts)
           .generateGcode()
           .getGcode();
-          const data = gcode.join('\n');
+        const data = gcode.join('\n');
         fs.writeFile(outFile, data, 'utf8', (err) => {
           if (err) {
             throw err;

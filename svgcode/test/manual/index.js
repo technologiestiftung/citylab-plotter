@@ -1,11 +1,11 @@
-const {svgcode} = require('../../dist');
+const { svgcode } = require('../../dist');
 
 const path = require('path');
 const fs = require('fs');
 const meow = require('meow');
 
 const cli = meow(`
-  Usage: node index.js relative/path/to/file.svg
+  Usage: node index.js relative/input/path/to/file.svg relative/output/path/file.gc
 
   Will output next to the srcfile with .gz extension.
 `, {});
@@ -21,8 +21,15 @@ const opts = {
 };
 
 const inFile = path.resolve(process.cwd(), cli.input[0]);
-const outFile = `${inFile.replace('.svg', '.gc')}`;
-console.log(outFile);
+let outFile = undefined;
+if(cli.input[1] === undefined){
+  outFile = `${inFile.replace('.svg', '.gc')}`;
+
+}else{
+  outFile = path.resolve(process.cwd(), cli.input[1]);
+}
+// const base = path.basename(inFile);
+// console.log(outFile);
 const svg = fs.readFileSync(inFile, 'utf8');
 const gcode = svgcode()
   // .loadFile(inFile)

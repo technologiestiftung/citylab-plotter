@@ -25,11 +25,11 @@ export const svgcode = () => {
   };
 
   const defaultOptions: IDefaultOptions = {
-    depth: 8,
+    depth: 10,
     map: 'xyz',
-    precision: 0.1,
+    precision: 1,
     ramping: false,
-    toolDiameter: 1,
+    toolDiameter: 0,
     top: -10,
     unit: 'mm',
   };
@@ -69,13 +69,31 @@ export const svgcode = () => {
       this.gCode.push(GCodeCommands.goHome); // Go Home again
       // now we patch some pen down so we don't hit the switch
       this.gCode.forEach((ele, i, arr) => {
-        arr[i] = ele.replace('Z0', 'Z2');
+        this.gCode[i] = ele.replace('Z0', 'Z3');
+      });
+      this.gCode.forEach((ele, i, arr) => {
+        arr[i] = ele.replace('G0 Z3', 'G0 Z10');
+      });
+      this.gCode.forEach((ele, i, arr) => {
+        // console.log(ele);
+        arr[i] = ele.replace(/([X,Y,Z,x,y,z]\d{1,4})([.]\d{1,6})/g, '$1');
+      });
+      this.gCode.forEach((ele, i, arr) => {
+        arr[i] = ele.replace(/([Y,y]\d{1,4})\ [Z]\d$/g, '$1');
       });
 
       for (let i = 0; i < this.gCode.length; i++) {
         if (this.gCode[i].match(/\(.*?\)/) !== null) {
           this.gCode.splice(i, 1);
           i--;
+        }
+      }
+      for (let i = 0; i < this.gCode.length; i++) {
+        if (i < this.gCode.length - 1) {
+          if (this.gCode[i] === this.gCode[i + 1]) {
+            this.gCode.splice(i, 1);
+            i--;
+          }
         }
       }
       return this.gCode;
