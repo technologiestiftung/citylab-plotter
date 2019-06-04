@@ -25,7 +25,7 @@ export const svgcode = () => {
   };
 
   const defaultOptions: IDefaultOptions = {
-    depth: 9,
+    depth: 8,
     map: 'xyz',
     precision: 0.1,
     ramping: false,
@@ -69,7 +69,7 @@ export const svgcode = () => {
       this.gCode.push(GCodeCommands.goHome); // Go Home again
       // now we patch some pen down so we don't hit the switch
       this.gCode.forEach((ele, i, arr) => {
-        arr[i] = ele.replace('Z0', 'Z1');
+        arr[i] = ele.replace('Z0', 'Z2');
       });
 
       for (let i = 0; i < this.gCode.length; i++) {
