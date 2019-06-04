@@ -6,48 +6,82 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<title>Page Title</title>
-  <meta name="description" content="something">
-  <meta name="author" content="me">
+<title> CityLAB Plotter</title>
+  <meta name="description" content="Frontend for controlling a 3DTwin">
+  <meta name="author" content="Fabian Morón Zirfas & Technologiestiftung Berlin">
 
   <link rel="stylesheet" type="text/css" href="./index.scss">
 
 </head>
 <body>
   <main>
-    <h1>hello CityLAB plotter !?!!</h1>
+    <h1 class="title">hello CityLAB plotter !?!!</h1>
     <section class="stati">
-      <div class="status--element" id="connectionState">
-        ---
-      </div>
-      <div class="status--element" id="currentPortInfos">
-        none
+      <div class="columns">
+
+        <div class="status--element column" id="connectionState">
+          ---
+        </div>
+        <div class="status--element column" id="currentPortInfos">
+          none
+        </div>
       </div>
 
     </section>
-    <h2>Plotter controlls</h2>
+    <h2 class="subtitle">Plotter controlls</h2>
     <section class="buttons">
-      <button class="button" id="homeing"> homeing `$H`</button>
-      <button class="button" id="unlock"> unlock `$x`</button>
+      <button class="button" id="homeing"> homeing <code>$H</code></button>
+      <button class="button" id="unlock"> unlock <code>$x</code></button>
       <button class="button" id="connect"> connect</button>
       <button class="button" id="disconnect"> disconnect</button>
     </section>
     <section class="controls">
-      <h2>Send single GCode commands</h2>
+      <h2 class="subtitle">Send single GCode commands</h2>
       <form method="post" id="single" >
-        <input type="text" name="serial" id="serial" class="input--single"><br>
-        <input type="button" value="send" class="button--single">
+        <div class="field">
+          <div class="control">
+
+            <input type="text" name="serial" id="serial" class="input--single input">
+          </div>
+        </div>
+        <div class="field">
+          <div class="controls">
+            <input type="button" value="send" class="button--single input button">
+
+          </div>
+        </div>
       </form>
-      <h2>Send multiline GCode commands</h2>
+      <h2 class="subtitle">Send multiline GCode commands</h2>
       <p>All  double blank lines will be removed</p>
+      <div class="field">
+        <div class="controls">
+
+          <div class="select">
+              <select>
+                <option>Select dropdown</option>
+                <option>With options</option>
+              </select>
+            </div>
+        </div>
+      </div>
       <form method="post" id="multi">
-          <textarea rows="5" cols="60" name="multiline" class="input--multi" id="textarea--multi"></textarea><br>
-           <input type="button" value="send" class="button--multi">
+        <div class="field">
+          <div class="controls">
+
+            <textarea rows="5" cols="60" name="multiline" class="input--multi textarea" id="textarea--multi"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <div class="controls">
+
+            <input type="button" value="send" class="button--multi input">
+          </div>
+        </div>
         </form>
-      <h2>Upload SVG file</h2>
+      <h2 class="subtitle">Upload SVG file</h2>
       <form id="svgupload" method="post" name="uploadsvg" enctype="multipart/form-data">
-        <input type="file" name="file" id="file"/>
-        <input type="button" value="Upload a file" class="button--upload"/>
+        <input type="file" name="file" accept="image/svg+xml" id="file" class="file"/>
+        <input type="button" value="Upload a file" class="button--upload input"/>
 
       </form>
     </section>

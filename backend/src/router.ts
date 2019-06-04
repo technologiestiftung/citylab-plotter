@@ -55,19 +55,20 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-const sPort = process.env.SERIAL_PORT || '/dev/tty.usbmodem143201';
+let sPort = process.env.SERIAL_PORT || '/dev/tty.usbmodem143201';
 
 // let currentState: IAppState = {
 //   currentPort: sPort,
 //   portIsOpen: false,
 // };
-const port = new SerialPort(sPort, {
+const portOpts: SerialPort.OpenOptions = {
   autoOpen: false,
   baudRate: 9600,
   dataBits: 8,
   parity: 'none',
   stopBits: 1,
-});
+};
+let port = new SerialPort(sPort, portOpts);
 
 const parser = port.pipe(new Readline(/*{ delimiter: '\n' }*/));
 
@@ -132,10 +133,10 @@ export const getCurrentState: () => Promise<IAppState> = async () => {
 
 const defaultCommandPost: AsyncRoute = async (request, response) => {
 
-  if (request.body.hasOwnProperty('commands') === true ) {
+  if (request.body.hasOwnProperty('commands') === true) {
     if (port.isOpen === true) {
       console.log('Commands from client:', request.body.commands);
-      if(Array.isArray(request.body.commands) === true){
+      if (Array.isArray(request.body.commands) === true) {
         commandBuffer.commands = [...request.body.commands];
       }
       commandBuffer.emitCommand();
@@ -170,6 +171,7 @@ const controlCommander: AsyncRoute = async (request, response) => {
       case 'disconnect':
         break;
       case 'connect':
+        console.log('connecter');
         break;
     }
     // console.log('control command is', cmd);
@@ -184,23 +186,25 @@ const controlCommander: AsyncRoute = async (request, response) => {
 };
 
 const connect: AsyncRoute = async (request, response) => {
-  console.log('call /command/connect');
-  console.log(request.body);
-  if (request.body.connect !== undefined && typeof request.body.connect === 'boolean') {
-    if (port.isOpen === false) {
-      port.open(async (err) => {
-        if (err) {
-          console.error(err);
-          response.json(await responsePayload(err, false));
-        } else {
-          // currentState.portIsOpen = port.isOpen;
-          commandBuffer.state = PlotterStates.ready;
-          response.json(await responsePayload('Connected', true));
-        }
-      });
-    } else {
-      response.json(await responsePayload('Already connected', true));
-    }
+  console.log('call /commands/connect');
+  // console.log(request.body);
+  if (request.body.portPath !== undefined && typeof request.body.portPath === 'string') {
+    sPort = request.body.portPath;
+    port = new SerialPort(sPort, portOpts);
+  }
+  if (port.isOpen === false) {
+    port.open(async (err) => {
+      if (err) {
+        console.error(err);
+        response.json(await responsePayload(err, false));
+      } else {
+        // currentState.portIsOpen = port.isOpen;
+        commandBuffer.state = PlotterStates.ready;
+        response.json(await responsePayload('Connected', true));
+      }
+    });
+  } else {
+    response.json(await responsePayload('Already connected', true));
   }
 };
 

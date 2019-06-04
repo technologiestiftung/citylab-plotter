@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel src/index.html -d dist",
+    "dev": "parcel src/index.html --no-cache -d dist",
     "parcel": "parcel"
   },
   "keywords": [],
@@ -17,13 +17,14 @@
     "@types/lodash": "^4.14.129",
     "@types/superagent": "^4.1.1",
     "parcel-bundler": "^1.12.3",
-    "sass": "^1.20.1",
+    "sass": "^1.20.3",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
   },
   "dependencies": {
     "@types/lodash.throttle": "^4.1.6",
     "babel-polyfill": "^6.26.0",
+    "bulma": "^0.7.5",
     "lodash.throttle": "^4.1.1",
     "redux": "^4.0.1",
     "superagent": "^5.0.5",

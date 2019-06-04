@@ -1,3 +1,4 @@
+@import '~bulma/bulma';
 *, *:before, *:after {
   box-sizing: border-box;
 }
@@ -20,12 +21,12 @@ main {
     }
   }
   section.buttons{
-    display: flex;
+    // display: flex;
   }
   section.controls {
-    display: flex;
+    // display: flex;
     // height: 40vh;
-    flex-direction: column;
+    // flex-direction: column;
     form{
       textarea{
         width: 100%;
@@ -59,4 +60,7 @@ main {
   width: 10em;
   // height: 3em;
 margin-right: 1em;
+code{
+  background-color: white;
+}
 }
