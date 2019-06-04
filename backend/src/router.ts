@@ -170,10 +170,9 @@ const controlCommander: AsyncRoute = async (request, response) => {
       case 'unlock':
         cmd = ControlCommands.unlock;
         commandBuffer.emitCommand(cmd);
-
         break;
       case 'zeroall':
-          commandBuffer.commands = [ControlCommands.zerox0, ControlCommands.zeroy0, ControlCommands.zeroz3];
+          commandBuffer.commands = [ControlCommands.zerox0, ControlCommands.zeroy0, 'z3\n', ControlCommands.zeroz3];
           commandBuffer.emitCommand();
           WS.emitter.emit('send', [{ plotterState: PlotterStates.busy }]);
       case 'disconnect':

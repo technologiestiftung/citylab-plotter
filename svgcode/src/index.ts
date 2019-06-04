@@ -71,9 +71,9 @@ export const svgcode = () => {
       this.gCode.forEach((ele, i, arr) => {
         this.gCode[i] = ele.replace('Z0', 'Z3');
       });
-      this.gCode.forEach((ele, i, arr) => {
-        arr[i] = ele.replace('G0 Z3', 'G0 Z10');
-      });
+      // this.gCode.forEach((ele, i, arr) => {
+      //   arr[i] = ele.replace('G1 Z3', 'G0 Z10');
+      // });
       this.gCode.forEach((ele, i, arr) => {
         // console.log(ele);
         arr[i] = ele.replace(/([X,Y,Z,x,y,z]\d{1,4})([.]\d{1,6})/g, '$1');
@@ -93,6 +93,16 @@ export const svgcode = () => {
           if (this.gCode[i] === this.gCode[i + 1]) {
             this.gCode.splice(i, 1);
             i--;
+          }
+        }
+      }
+      // tslint:disable-next-line: prefer-for-of
+      for (let i = 0; i < this.gCode.length; i++) {
+        if (this.gCode[i].startsWith('G0 X') === true) {
+          console.log('Got a G0 without lift');
+          if (i > 0) {
+            this.gCode.splice(i, 0, 'G0 Z10');
+            i++;
           }
         }
       }
