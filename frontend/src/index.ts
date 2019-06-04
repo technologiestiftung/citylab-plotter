@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputSingle: HTMLInputElement | null = document.querySelector('input.input--single');
   const buttonConnect: HTMLButtonElement | null = document.querySelector('button#connect');
   const buttonHomeing: HTMLButtonElement | null = document.querySelector('button#homeing');
+  const buttonZeroall: HTMLButtonElement | null = document.querySelector('button#zeroall');
   const buttonUnlock: HTMLButtonElement | null = document.querySelector('button#unlock');
   const buttonDisconnect: HTMLButtonElement | null = document.querySelector('button#disconnect');
   const responseTarget: HTMLElement | null = document.querySelector('section.responses');
@@ -122,6 +123,12 @@ document.addEventListener('DOMContentLoaded', () => {
       buttonHomeing.addEventListener('click', (event) => {
         event.preventDefault();
         store.dispatch(postData({}, `${apiUrl}/commands/home`));
+      });
+    }
+    if (buttonZeroall !== null) {
+      buttonZeroall.addEventListener('click', (event) => {
+        event.preventDefault();
+        store.dispatch(postData({}, `${apiUrl}/commands/zeroall`));
       });
     }
     if (buttonUnlock !== null) {

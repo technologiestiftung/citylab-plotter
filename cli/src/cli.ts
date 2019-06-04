@@ -22,6 +22,7 @@ const main = async () => {
     -g --gcode {string} Path to gcode file
     -u --unlock {boolean} Send unlock command $X
     -p --portpath {string} Path to serial port
+    -z --zeroall {boolean} Send zero all command. Usefull after home
     -c --convert {string} Path to SVG file. Will convert to GCODE
          and write to the same location
     --outfile {string} Path to output file for --convert
@@ -73,6 +74,10 @@ const main = async () => {
         },
         unlock: {
           alias: 'u',
+          type: 'boolean',
+        },
+        zeroall: {
+          alias: 'z',
           type: 'boolean',
         },
       },
@@ -129,7 +134,14 @@ const main = async () => {
     } catch (error) {
       console.error(error);
     }
-
+  }
+  if (cli.flags.zeroall === true) {
+    try {
+      const res = await superagent.post(`${host}/commands/zeroall`).send({});
+      console.log(res.body);
+    } catch (error) {
+      console.error(error);
+    }
   }
   if (cli.flags.unlock === true) {
     try {
@@ -181,7 +193,6 @@ const main = async () => {
         let outFile: string | undefined;
         if (cli.flags.outfile === undefined) {
           outFile = `${inFile.replace('.svg', '.gc')}`;
-
         } else {
           outFile = path.resolve(process.cwd(), cli.flags.outfile);
         }
