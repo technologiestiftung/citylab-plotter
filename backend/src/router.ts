@@ -132,7 +132,7 @@ export const getCurrentState: () => Promise<IAppState> = async () => {
 };
 
 const defaultCommandPost: AsyncRoute = async (request, response) => {
-
+  console.log(request.body);
   if (request.body.hasOwnProperty('commands') === true) {
     if (port.isOpen === true) {
       console.log('Commands from client:', request.body.commands);

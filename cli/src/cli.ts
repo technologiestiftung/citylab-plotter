@@ -103,7 +103,7 @@ const main = async () => {
     }
     try {
       const res = await superagent.post(`${host}/commands/connect`).send({ portPath });
-      console.log(res);
+      console.log(res.body);
     } catch (error) {
       console.error(error);
     }
@@ -112,7 +112,7 @@ const main = async () => {
   if (cli.flags.close === true) {
     try {
       const res = await superagent.post(`${host}/commands/disconnect`).send({});
-      console.log(res);
+      console.log(res.body);
     } catch (error) {
       console.error(error);
     }
@@ -121,7 +121,7 @@ const main = async () => {
   if (cli.flags.home === true) {
     try {
       const res = await superagent.post(`${host}/commands/home`).send({});
-      console.log(res);
+      console.log(res.body);
     } catch (error) {
       console.error(error);
     }
@@ -130,7 +130,7 @@ const main = async () => {
   if (cli.flags.unlock === true) {
     try {
       const res = await superagent.post(`${host}/commands/unlock`).send({});
-      console.log(res);
+      console.log(res.body);
     } catch (error) {
       console.error(error);
     }
@@ -145,7 +145,7 @@ const main = async () => {
       // console.log(cli.flags.g);
       const inFile = path.resolve(process.cwd(), cli.flags.g);
       if (fs.statSync(inFile)) {
-        console.log(inFile);
+        console.log('input file:', inFile);
       }
       const gcodeRaw = await readFileAsync(inFile, 'utf8');
       const gcode = gcodeRaw.split('\n');
@@ -161,8 +161,9 @@ const main = async () => {
           i--;
         }
       }
-      // console.log(gcode);
-      const res = await superagent.post(`${host}/commands`).send({commands: gcode});
+      console.log(gcode);
+      const res = await superagent.post(`${host}`).send({commands: gcode});
+      console.log(res.text);
 
     } catch (error) {
       console.error('GCode file does not exist');
@@ -171,7 +172,7 @@ const main = async () => {
   }
   if (cli.flags.convert !== undefined) {
     try {
-      const inFile = path.resolve(process.cwd(), cli.flags.s);
+      const inFile = path.resolve(process.cwd(), cli.flags.convert);
       if (fs.statSync(inFile)) {
 
         const outFile = `${inFile.replace('.svg', '.gc')}`;
@@ -184,7 +185,8 @@ const main = async () => {
           .setOptions(opts)
           .generateGcode()
           .getGcode();
-        fs.writeFile(outFile, gcode, 'utf8', (err) => {
+          const data = gcode.join('\n');
+        fs.writeFile(outFile, data, 'utf8', (err) => {
           if (err) {
             throw err;
           } else {
