@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="841px" height="1189px" viewBox="0 0 841 1189" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Citylab Plotter A0</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Citylab-Plotter-A0" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" stroke="#979797" fill="#D8D8D8" x="97.5" y="68.5" width="125" height="138"></rect>
+        <circle id="Oval" stroke="#979797" fill="#D8D8D8" cx="383.5" cy="137.5" r="69.5"></circle>
+        <path d="M48.6138568,410.225462 C80.8712856,318.403673 118,287.79641 160,318.403673 C223,364.314568 180.976692,493.015744 295.066272,474.66365 C371.125993,462.428921 434.215148,410.342262 484.333739,318.403673 L160,245.678573" id="Path" stroke="#979797"></path>
+    </g>
+</svg>
