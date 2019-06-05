@@ -14,6 +14,10 @@ Z Axis step per mm 12.5
 Settings via GCodes
 
 ```gcode
+(work speed)
+$4=2500
+(position speed)
+$5=3125
 (Comments = % () ; :)
 (Homing speed)
 $19=312.5
@@ -21,7 +25,8 @@ $19=312.5
 $20=3125
 (Acceleration)
 $8=125
-
+(refresh interval)
+$35=0.1
 (x axis steps per mm )
 $0=12.5
 (y axis steps per mm )

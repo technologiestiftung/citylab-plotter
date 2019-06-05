@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ciall":"cd backend && npm ci && cd .. && cd frontend && npm ci && cd .. && cd cli && npm ci"
+    "ciall": "cd backend && npm ci && cd .. && cd frontend && npm ci && cd .. && cd cli && npm ci"
   },
   "repository": {
     "type": "git",

@@ -13,6 +13,7 @@ export interface IDefaultOptions {
 }
 export enum GCodeCommands {
   lift = 'G0 Z10',
+  feedrate5000 = 'F5000',
   goHome = 'G0 X0 Y0',
 }
 export interface ISvgcode {
