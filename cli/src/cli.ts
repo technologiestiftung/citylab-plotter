@@ -92,7 +92,8 @@ const main = async () => {
     // depth: 9,
     // unit: 'mm',
     // map: 'xyz',
-    // top: -10
+    // top: -10,
+    toolDiamter: 1,
   };
   // const keys = Object.keys(cli.flags);
 
