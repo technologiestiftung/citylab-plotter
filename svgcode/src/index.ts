@@ -65,6 +65,7 @@ export const svgcode = () => {
     },
     getGcode() {
       this.gCode.splice(3, 0, GCodeCommands.lift); // insert a lift at start after the first three elements
+      this.gCode.splice(4, 0, GCodeCommands.feedrate5000); // insert a lift at start after the first three elements
       this.gCode.push(GCodeCommands.lift); // left the pen at the end
       this.gCode.push(GCodeCommands.goHome); // Go Home again
       // now we patch some pen down so we don't hit the switch

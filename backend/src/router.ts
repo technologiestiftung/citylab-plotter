@@ -13,6 +13,10 @@ import { defaultGet } from './route-handlers/default-get';
 import { responsePayload } from './route-handlers/response-payload';
 import { uploadSVG } from './route-handlers/upload-svg';
 import { WS } from './websocket';
+import chalk from 'chalk';
+//import utf7 from 'utf7';
+import legacy from 'legacy-encoding';
+
 
 const router = Router();
 
@@ -37,12 +41,15 @@ commandBuffer.on('command', (cmd) => {
   if (currentCommand.endsWith('\n') === false) {
     currentCommand = `${currentCommand}\n`;
   }
-  port.write(currentCommand, (error, bytes) => {
+  console.log('Writing to port:');
+  // console.log(chalk.bgRed(utf7.encode(currentCommand)));
+  port.write(Buffer.from(currentCommand), (error, bytes) => {
     if (error) {
       console.error(error);
     } else {
       commandBuffer.unshiftCommand();
-      console.info(bytes);
+      // console.info(bytes);
+      setTimeout(()=>{},100);
     }
   });
 });
@@ -84,22 +91,25 @@ port.on('error', (err) => {
 
 parser.on('data', (data: string) => {
   // console.log(typeof data);
-  console.log('Message from MCU:', data);
+  console.log(chalk.yellow('Message from MCU:'), chalk.inverse(data));
   // console.log(data);
   if (data.trim() === ': finished : 0') {
-    console.log('Got: finished : 0');
+    console.log(chalk.bgGreen(chalk.bold('FOUND: finished : 0 ')));
     gotMCUFinished = true;
   }
   if (data.trim() === ': state = Idle') {
     gotMCUStateIdle = true;
-    console.log('Got : state = Idle');
+    console.log(chalk.bgGreen(chalk.bold('FOUND : state = Idle ')));
   }
   if (gotMCUStateIdle === true && gotMCUFinished === true) {
     console.log('ready for next command');
     gotMCUStateIdle = !gotMCUStateIdle;
     gotMCUFinished = !gotMCUFinished;
     // commandBuffer.emitHello('buddy');
-    commandBuffer.emitCommand();
+    setTimeout(()=>{
+      commandBuffer.emitCommand();
+
+    },500);
   }
   // WS.emitter.emit('send', data);
 });
