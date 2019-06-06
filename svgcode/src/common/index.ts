@@ -10,7 +10,9 @@ export interface IDefaultOptions {
   unit?: 'mm'| 'inch';
   map?: string;
   top?: number;
+  dooFloor?: boolean;
 }
+
 export enum GCodeCommands {
   lift = 'G0 Z10',
   feedrate5000 = 'F5000',

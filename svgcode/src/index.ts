@@ -32,6 +32,7 @@ export const svgcode = () => {
     toolDiameter: 0,
     top: -10,
     unit: 'mm',
+    doFloor: true,
   };
 
   const obj: ISvgcode = {
@@ -75,11 +76,13 @@ export const svgcode = () => {
       // this.gCode.forEach((ele, i, arr) => {
       //   arr[i] = ele.replace('G1 Z3', 'G0 Z10');
       // });
-      this.gCode.forEach((ele, i, arr) => {
-        // console.log(ele);
-        arr[i] = ele.replace(/([X,Y,Z,x,y,z]\d{1,4})([.]\d{1,6})/g, '$1');
-      });
-      this.gCode.forEach((ele, i, arr) => {
+      if(doFloor === true){
+
+        this.gCode.forEach((ele, i, arr) => {
+          arr[i] = ele.replace(/([X,Y,Z,x,y,z]\d{1,4})([.]\d{1,6})/g, '$1');
+        });
+      }
+        this.gCode.forEach((ele, i, arr) => {
         arr[i] = ele.replace(/([Y,y]\d{1,4})\ [Z]\d$/g, '$1');
       });
 
@@ -100,7 +103,7 @@ export const svgcode = () => {
       // tslint:disable-next-line: prefer-for-of
       for (let i = 0; i < this.gCode.length; i++) {
         if (this.gCode[i].startsWith('G0 X') === true) {
-          console.log('Got a G0 without lift');
+          // console.log('Got a G0 without lift');
           if (i > 0) {
             this.gCode.splice(i, 0, 'G0 Z10');
             i++;

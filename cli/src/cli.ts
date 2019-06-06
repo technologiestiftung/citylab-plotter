@@ -3,8 +3,11 @@ import { svgcode } from '@tsb/svgcode';
 import fs from 'fs';
 import meow from 'meow';
 import path from 'path';
-import superagent = require('superagent');
+// import superagent = require('superagent');
 import util from 'util';
+// import { config } from 'dotenv';
+import chalk from 'chalk';
+import { IObject } from './interfaces';
 
 const readFileAsync = util.promisify(fs.readFile);
 
@@ -40,156 +43,196 @@ const main = async () => {
     node cli.js -oh
   `, {
       flags: {
-        close: {
-          alias: 'x',
+        // close: {
+        //   alias: 'x',
+        //   type: 'boolean',
+        // },
+        // convert: {
+        //   alias: 'c',
+        //   type: 'string',
+        // },
+        feedrate: {
+          alias: 'f',
+          type: 'string',
+        },
+        dedupe: {
+          alias: 'd',
           type: 'boolean',
         },
-        convert: {
+        floor: {
+          type: 'boolean',
+        },
+        config: {
           alias: 'c',
           type: 'string',
-        },
-        gcode: {
-          alias: 'g',
-          type: 'string',
-        },
-        home: {
-          type: 'boolean',
-        },
-        host: {
-          type: 'string',
-        },
-        open: {
-          alias: 'o',
-          type: 'boolean',
         },
         outfile: {
           type: 'string',
         },
-        portpath: {
-          alias: 'p',
-          type: 'string',
-        },
-        state: {
-          type: 'boolean',
-        },
-        unlock: {
-          alias: 'u',
-          type: 'boolean',
-        },
-        zeroall: {
-          alias: 'z',
-          type: 'boolean',
-        },
+        // gcode: {
+        //   alias: 'g',
+        //   type: 'string',
+        // },
+        // home: {
+        //   type: 'boolean',
+        // },
+        // host: {
+        //   type: 'string',
+        // },
+        // open: {
+        //   alias: 'o',
+        //   type: 'boolean',
+        // },
+        // portpath: {
+        //   alias: 'p',
+        //   type: 'string',
+        // },
+        // state: {
+        //   type: 'boolean',
+        // },
+        // unlock: {
+        //   alias: 'u',
+        //   type: 'boolean',
+        // },
+        // zeroall: {
+        //   alias: 'z',
+        //   type: 'boolean',
+        // },
       },
     });
 
-  // console.log(cli.input, cli.flags);
+  console.log(cli.input, cli.flags);
 
   // if (cli.input.length === 0) {
   //   cli.showHelp();
   // }
-  const opts = {
-    // depth: 9,
-    // unit: 'mm',
-    // map: 'xyz',
-    // top: -10,
-    toolDiamter: 1,
-  };
+  // const opts = {
+  //   // depth: 9,
+  //   // unit: 'mm',
+  //   // map: 'xyz',
+  //   // top: -10,
+  //   toolDiamter: 1,
+  // };
   // const keys = Object.keys(cli.flags);
-
-  if (cli.flags.state === true) {
-    try {
-      const state = await superagent.get(`${host}`);
-      console.log(state.text);
-      process.exit(0);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  if (cli.flags.open === true) {
-    let portPath: string | undefined;
-    if (cli.flags.portpath !== undefined) {
-      portPath = cli.flags.portpath;
-    }
-    try {
-      const res = await superagent.post(`${host}/commands/connect`).send({ portPath });
-      console.log(res.body);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  if (cli.flags.close === true) {
-    try {
-      const res = await superagent.post(`${host}/commands/disconnect`).send({});
-      console.log(res.body);
-    } catch (error) {
-      console.error(error);
-    }
-
-  }
-  if (cli.flags.home === true) {
-    try {
-      const res = await superagent.post(`${host}/commands/home`).send({});
-      console.log(res.body);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  if (cli.flags.zeroall === true) {
-    try {
-      const res = await superagent.post(`${host}/commands/zeroall`).send({});
-      console.log(res.body);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  if (cli.flags.unlock === true) {
-    try {
-      const res = await superagent.post(`${host}/commands/unlock`).send({});
-      console.log(res.body);
-    } catch (error) {
-      console.error(error);
-    }
-
-  }
-  if (cli.flags.host !== undefined) {
-    host = cli.flags.host;
-  }
-
-  if (cli.flags.gcode !== undefined) {
-    try {
-      // console.log(cli.flags.g);
-      const inFile = path.resolve(process.cwd(), cli.flags.g);
-      if (fs.statSync(inFile)) {
-        console.log('input file:', inFile);
+  /*
+    if (cli.flags.state === true) {
+      try {
+        const state = await superagent.get(`${host}`);
+        console.log(state.text);
+        process.exit(0);
+      } catch (error) {
+        console.error(error);
       }
-      const gcodeRaw = await readFileAsync(inFile, 'utf8');
-      const gcode = gcodeRaw.split('\n');
-      gcode.map(ele => ele += `${ele}\n`);
-      gcode.forEach((ele, i, arr) => {
-        if (ele.endsWith('\n') === false) {
-          arr[i] = `${ele}\n`;
-        }
-      });
-      for (let i = 0; i < gcode.length; i++) {
-        if (gcode[i].match(/\(.*?\)/) !== null) {
-          gcode.splice(i, 1);
-          i--;
-        }
+    }
+    if (cli.flags.open === true) {
+      let portPath: string | undefined;
+      if (cli.flags.portpath !== undefined) {
+        portPath = cli.flags.portpath;
       }
-      console.log(gcode);
-      const res = await superagent.post(`${host}`).send({ commands: gcode });
-      console.log(res.text);
+      try {
+        const res = await superagent.post(`${host}/commands/connect`).send({ portPath });
+        console.log(res.body);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
+    if (cli.flags.close === true) {
+      try {
+        const res = await superagent.post(`${host}/commands/disconnect`).send({});
+        console.log(res.body);
+      } catch (error) {
+        console.error(error);
+      }
+
+    }
+    if (cli.flags.home === true) {
+      try {
+        const res = await superagent.post(`${host}/commands/home`).send({});
+        console.log(res.body);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (cli.flags.zeroall === true) {
+      try {
+        const res = await superagent.post(`${host}/commands/zeroall`).send({});
+        console.log(res.body);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (cli.flags.unlock === true) {
+      try {
+        const res = await superagent.post(`${host}/commands/unlock`).send({});
+        console.log(res.body);
+      } catch (error) {
+        console.error(error);
+      }
+
+    }
+    if (cli.flags.host !== undefined) {
+      host = cli.flags.host;
+    }
+
+    if (cli.flags.gcode !== undefined) {
+      try {
+        // console.log(cli.flags.g);
+        const inFile = path.resolve(process.cwd(), cli.flags.g);
+        if (fs.statSync(inFile)) {
+          console.log('input file:', inFile);
+        }
+        const gcodeRaw = await readFileAsync(inFile, 'utf8');
+        const gcode = gcodeRaw.split('\n');
+        gcode.map(ele => ele += `${ele}\n`);
+        gcode.forEach((ele, i, arr) => {
+          if (ele.endsWith('\n') === false) {
+            arr[i] = `${ele}\n`;
+          }
+        });
+        for (let i = 0; i < gcode.length; i++) {
+          if (gcode[i].match(/\(.*?\)/) !== null) {
+            gcode.splice(i, 1);
+            i--;
+          }
+        }
+        console.log(gcode);
+        const res = await superagent.post(`${host}`).send({ commands: gcode });
+        console.log(res.text);
+
+      } catch (error) {
+        console.error('GCode file does not exist');
+        process.exit(1);
+      }
+    }
+    */
+  let opts:IObject = {};
+  if (cli.flags.config !== undefined) {
+    const configFile = path.resolve(process.cwd(), cli.flags.config);
+    let configFileExists = false;
+    try {
+      if (fs.statSync(configFile)) {
+        configFileExists = true;
+      }
     } catch (error) {
-      console.error('GCode file does not exist');
+      console.log(chalk.red(`The config file "${configFile}" does not exist`));
       process.exit(1);
     }
+    let json: IObject | undefined;
+    if (configFileExists === true) {
+      try {
+        json = JSON.parse(await readFileAsync(configFile, 'utf8'));
+      } catch (error) {
+        console.log(chalk.red(`The config file "${configFile}" is not valid JSON`));
+        process.exit(1);
+      }
+    }
+    Object.assign(opts, json);
+    console.log(opts);
   }
-  if (cli.flags.convert !== undefined) {
+  if (cli.input[0] !== undefined) {
     try {
-      const inFile = path.resolve(process.cwd(), cli.flags.convert);
+      const inFile = path.resolve(process.cwd(), cli.input[0]);
       if (fs.statSync(inFile)) {
         let outFile: string | undefined;
         if (cli.flags.outfile === undefined) {
@@ -221,12 +264,9 @@ const main = async () => {
       console.error(error);
       process.exit(1);
     }
+  } else {
+    // cli.showHelp();
   }
-  // fs.writeFile(outFile, gcode.join('\n'), 'utf8', (err) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-  // });
 
 };
 main().catch(console.error);

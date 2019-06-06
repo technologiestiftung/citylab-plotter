@@ -1,0 +1,9 @@
+{
+  "depth": 10,
+  "map": "xyz",
+  "precision": 1,
+  "ramping": false,
+  "toolDiameter": 0,
+  "top": -10,
+  "unit": "mm"
+}
