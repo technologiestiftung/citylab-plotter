@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// import { svgcode } from '@tsb/svgcode';
-import { svgcode } from '../../svgcode/dist/index';
+import { svgcode } from '@tsb/svgcode';
+// import { svgcode } from '../../svgcode/dist/index';
 
 import chalk from 'chalk';
 import fs from 'fs';
