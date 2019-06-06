@@ -1,6 +1,9 @@
-# Misc Lab Notes
+# Lab Notes Conucon
 
- done during development
+!Note: Most of this is deprecated. We switched to the grbl firmware and use cnc.js for controll now. See the [LAB-NOTES.md](./LAB-NOTES.md).
+
+
+Done during development.
 
 ## Setup Millimeters for 3DTwin
 
@@ -84,6 +87,7 @@ G0 X0 Y0
 
 
 ## Messages from MCU
+
 
 on startup 
 
