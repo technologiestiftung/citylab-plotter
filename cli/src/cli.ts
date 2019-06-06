@@ -1,46 +1,48 @@
+#!/usr/bin/env node
 import { svgcode } from '@tsb/svgcode';
+// import { svgcode } from '../../svgcode/dist/index';
 
+import chalk from 'chalk';
 import fs from 'fs';
 import meow from 'meow';
 import path from 'path';
 // import superagent = require('superagent');
 import util from 'util';
 // import { config } from 'dotenv';
-import chalk from 'chalk';
 import { IObject } from './interfaces';
 
 const readFileAsync = util.promisify(fs.readFile);
 
-let host: string = process.env.EXPRESS_HOST || 'http://localhost:3000';
+// let host: string = process.env.EXPRESS_HOST || 'http://localhost:3000';
 
 const main = async () => {
 
   const cli = meow(`
-  Usage: node cli.js [FLAGS]
+  Usage: node cli.js ./path/to/infile.svg [./path/to/outfile.gc] [FLAGS]
 
   Options:
+    -c --config {string} Path to config.json
+    -d --dedupe {boolean} Default true removes following duplicate lines from gcode
+    -f --feedrate {number} Default 3125 Feedrate to write to top of gcode
+    --floor {boolean} Default true Removes .000 values from coordinates
+    --print {boolean} Default false Prints the Gcode after generation
 
-    -o --open {boolean}
-    -d --close {boolean}
-    -g --gcode {string} Path to gcode file
-    -u --unlock {boolean} Send unlock command $X
-    -p --portpath {string} Path to serial port
-    -z --zeroall {boolean} Send zero all command. Usefull after home
-    -c --convert {string} Path to SVG file. Will convert to GCODE
-         and write to the same location
-    --outfile {string} Path to output file for --convert
-    --home {boolean} send homeing command $H
-    --host {string} Host domain default is ${host}
-         (can be set via env varialbe EXPRESS_HOST)
-    --state {boolean} Get app state
-         (there you will find the port path)
+  Config (needs valid json overrules cli flags):
+  {
+    "depth": 10,
+    "map": "xyz",
+    "precision": 1,
+    "ramping": false,
+    "toolDiameter": 1,
+    "top": -10,
+    "unit": "mm",
+    "floor": false,
+    "dedupe": true,
+    "feedrate": 3000,
+    "print": false
+  }
 
-  Example:
-    Send some gcode
-    $ node cli.js --open --portpath /dev/tty.usbmodem143201 -g ../realtive/path/to/file.gcode
 
-    Open the port and do a homeing command
-    node cli.js -oh
   `, {
       flags: {
         // close: {
@@ -51,162 +53,33 @@ const main = async () => {
         //   alias: 'c',
         //   type: 'string',
         // },
-        feedrate: {
-          alias: 'f',
-          type: 'string',
-        },
-        dedupe: {
-          alias: 'd',
-          type: 'boolean',
-        },
-        floor: {
-          type: 'boolean',
-        },
         config: {
           alias: 'c',
           type: 'string',
         },
-        outfile: {
+          dedupe: {
+            alias: 'd',
+            default: true,
+            type: 'boolean',
+          },
+        feedrate: {
+          alias: 'f',
+          default: 3125,
           type: 'string',
         },
-        // gcode: {
-        //   alias: 'g',
-        //   type: 'string',
-        // },
-        // home: {
-        //   type: 'boolean',
-        // },
-        // host: {
-        //   type: 'string',
-        // },
-        // open: {
-        //   alias: 'o',
-        //   type: 'boolean',
-        // },
-        // portpath: {
-        //   alias: 'p',
-        //   type: 'string',
-        // },
-        // state: {
-        //   type: 'boolean',
-        // },
-        // unlock: {
-        //   alias: 'u',
-        //   type: 'boolean',
-        // },
-        // zeroall: {
-        //   alias: 'z',
-        //   type: 'boolean',
-        // },
+        floor: {
+          default: true,
+          type: 'boolean',
+        },
+        print: {
+          type: 'boolean',
+        },
       },
     });
 
-  console.log(cli.input, cli.flags);
+  // console.log(cli.input, cli.flags);
 
-  // if (cli.input.length === 0) {
-  //   cli.showHelp();
-  // }
-  // const opts = {
-  //   // depth: 9,
-  //   // unit: 'mm',
-  //   // map: 'xyz',
-  //   // top: -10,
-  //   toolDiamter: 1,
-  // };
-  // const keys = Object.keys(cli.flags);
-  /*
-    if (cli.flags.state === true) {
-      try {
-        const state = await superagent.get(`${host}`);
-        console.log(state.text);
-        process.exit(0);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (cli.flags.open === true) {
-      let portPath: string | undefined;
-      if (cli.flags.portpath !== undefined) {
-        portPath = cli.flags.portpath;
-      }
-      try {
-        const res = await superagent.post(`${host}/commands/connect`).send({ portPath });
-        console.log(res.body);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    if (cli.flags.close === true) {
-      try {
-        const res = await superagent.post(`${host}/commands/disconnect`).send({});
-        console.log(res.body);
-      } catch (error) {
-        console.error(error);
-      }
-
-    }
-    if (cli.flags.home === true) {
-      try {
-        const res = await superagent.post(`${host}/commands/home`).send({});
-        console.log(res.body);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (cli.flags.zeroall === true) {
-      try {
-        const res = await superagent.post(`${host}/commands/zeroall`).send({});
-        console.log(res.body);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (cli.flags.unlock === true) {
-      try {
-        const res = await superagent.post(`${host}/commands/unlock`).send({});
-        console.log(res.body);
-      } catch (error) {
-        console.error(error);
-      }
-
-    }
-    if (cli.flags.host !== undefined) {
-      host = cli.flags.host;
-    }
-
-    if (cli.flags.gcode !== undefined) {
-      try {
-        // console.log(cli.flags.g);
-        const inFile = path.resolve(process.cwd(), cli.flags.g);
-        if (fs.statSync(inFile)) {
-          console.log('input file:', inFile);
-        }
-        const gcodeRaw = await readFileAsync(inFile, 'utf8');
-        const gcode = gcodeRaw.split('\n');
-        gcode.map(ele => ele += `${ele}\n`);
-        gcode.forEach((ele, i, arr) => {
-          if (ele.endsWith('\n') === false) {
-            arr[i] = `${ele}\n`;
-          }
-        });
-        for (let i = 0; i < gcode.length; i++) {
-          if (gcode[i].match(/\(.*?\)/) !== null) {
-            gcode.splice(i, 1);
-            i--;
-          }
-        }
-        console.log(gcode);
-        const res = await superagent.post(`${host}`).send({ commands: gcode });
-        console.log(res.text);
-
-      } catch (error) {
-        console.error('GCode file does not exist');
-        process.exit(1);
-      }
-    }
-    */
-  let opts:IObject = {};
+  let opts: IObject = {};
   if (cli.flags.config !== undefined) {
     const configFile = path.resolve(process.cwd(), cli.flags.config);
     let configFileExists = false;
@@ -227,25 +100,31 @@ const main = async () => {
         process.exit(1);
       }
     }
-    Object.assign(opts, json);
-    console.log(opts);
+    opts = Object.assign({}, json);
   }
+  const doFloor = opts.floor !== undefined ? opts.floor : cli.flags.floor;
+  const doDedupe = opts.dedupe !== undefined ? opts.dedupe : cli.flags.dedupe;
+  const doPrint = opts.print !== undefined ? opts.print : cli.flags.print;
+  const feedrate = opts.feedrate !== undefined ? opts.feedrate : cli.flags.feedrate;
+  // console.log(opts);
+  delete opts.floor;
+  delete opts.dedupe;
+  delete opts.print;
+  delete opts.feedrate;
+
   if (cli.input[0] !== undefined) {
     try {
       const inFile = path.resolve(process.cwd(), cli.input[0]);
       if (fs.statSync(inFile)) {
         let outFile: string | undefined;
-        if (cli.flags.outfile === undefined) {
+        if (cli.input[1] === undefined) {
           outFile = `${inFile.replace('.svg', '.gc')}`;
         } else {
-          outFile = path.resolve(process.cwd(), cli.flags.outfile);
+          outFile = path.resolve(process.cwd(), cli.input[1]);
         }
-        // console.log(outFile);
         const svg = fs.readFileSync(inFile, 'utf8');
-        const gcode = svgcode()
-          // .loadFile(inFile)
+        const gcode = svgcode(doFloor, doDedupe, feedrate, opts)
           .setSvg(svg)
-          // .loadFile(path.resolve(__dirname, './in-svg/town-a0-841-1189.svg'))
           .setOptions(opts)
           .generateGcode()
           .getGcode();
@@ -258,7 +137,9 @@ const main = async () => {
           }
         });
         // superagent.post(`${host}`).send({ commands: gcode }).then(console.log).catch(console.error);
-        process.stdout.write(gcode.join('\n'));
+        if (doPrint === true) {
+          console.log(gcode.join('\n'));
+        }
       }
     } catch (error) {
       console.error(error);

@@ -3,7 +3,11 @@
   "map": "xyz",
   "precision": 1,
   "ramping": false,
-  "toolDiameter": 0,
+  "toolDiameter": 1,
   "top": -10,
-  "unit": "mm"
+  "unit": "mm",
+  "floor": false,
+  "dedupe": true,
+  "feedrate": 3000,
+  "print": false
 }

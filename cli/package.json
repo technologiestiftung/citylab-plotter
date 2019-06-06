@@ -1,21 +1,24 @@
 {
-  "name": "cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "bin": {
+    "svgcode": "./dist/cli.js"
+  },
+  "preferGlobal": true,
+  "name": "@tsb/svgcode-cli",
+  "version": "0.1.0",
+  "description": "Commandline interface for @tsb/svgcode. Written for CityLAB Berlin plotting",
+  "main": "dist/cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "tsc -p . -w",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "prepare": "npm run build"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@tsb/svgcode": "^0.3.0",
-    "@types/superagent": "^4.1.1",
-    "meow": "^5.0.0",
-    "superagent": "^5.0.5"
+    "@tsb/svgcode": "^0.4.0",
+    "meow": "^5.0.0"
   },
   "devDependencies": {
     "@types/meow": "^5.0.0",
