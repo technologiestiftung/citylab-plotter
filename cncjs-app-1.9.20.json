@@ -1,0 +1,222 @@
+{
+  "version": "1.9.20",
+  "state": {
+    "session": {
+      "name": "",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IiIsIm5hbWUiOiIiLCJpYXQiOjE1NTk4MTE0MjAsImV4cCI6MTU2MjQwMzQyMH0.1nqn63R_mU30BJE2ixcRzucx4r-71sRCGtx_oylkZNQ",
+      "enabled": false
+    },
+    "workspace": {
+      "container": {
+        "default": {
+          "widgets": [
+            "visualizer"
+          ]
+        },
+        "primary": {
+          "show": true,
+          "widgets": [
+            "connection",
+            "console",
+            "grbl"
+          ]
+        },
+        "secondary": {
+          "show": true,
+          "widgets": [
+            "axes",
+            "gcode",
+            "macro"
+          ]
+        }
+      },
+      "machineProfile": {
+        "id": null
+      }
+    },
+    "widgets": {
+      "axes": {
+        "minimized": false,
+        "axes": [
+          "x",
+          "y",
+          "z"
+        ],
+        "jog": {
+          "keypad": false,
+          "imperial": {
+            "step": 16,
+            "distances": []
+          },
+          "metric": {
+            "step": 12,
+            "distances": []
+          }
+        },
+        "mdi": {
+          "disabled": false
+        },
+        "shuttle": {
+          "feedrateMin": 500,
+          "feedrateMax": 2000,
+          "hertz": 10,
+          "overshoot": 1
+        }
+      },
+      "connection": {
+        "minimized": false,
+        "controller": {
+          "type": "Grbl"
+        },
+        "port": "/dev/ttyACM0",
+        "baudrate": 115200,
+        "connection": {
+          "type": "serial",
+          "serial": {
+            "rtscts": false
+          }
+        },
+        "autoReconnect": false
+      },
+      "console": {
+        "minimized": false
+      },
+      "custom": {
+        "disabled": true,
+        "minimized": false,
+        "title": "",
+        "url": ""
+      },
+      "gcode": {
+        "minimized": false
+      },
+      "grbl": {
+        "minimized": false,
+        "panel": {
+          "queueReports": {
+            "expanded": true
+          },
+          "statusReports": {
+            "expanded": true
+          },
+          "modalGroups": {
+            "expanded": true
+          }
+        }
+      },
+      "laser": {
+        "minimized": false,
+        "panel": {
+          "laserTest": {
+            "expanded": true
+          }
+        },
+        "test": {
+          "power": 0,
+          "duration": 0,
+          "maxS": 1000
+        }
+      },
+      "macro": {
+        "minimized": false
+      },
+      "marlin": {
+        "minimized": false,
+        "panel": {
+          "heaterControl": {
+            "expanded": true
+          },
+          "statusReports": {
+            "expanded": false
+          },
+          "modalGroups": {
+            "expanded": false
+          }
+        },
+        "heater": {
+          "extruder": 180,
+          "heatedBed": 60
+        }
+      },
+      "probe": {
+        "minimized": false,
+        "probeCommand": "G38.2",
+        "useTLO": false,
+        "probeDepth": 10,
+        "probeFeedrate": 20,
+        "touchPlateHeight": 10,
+        "retractionDistance": 4
+      },
+      "smoothie": {
+        "minimized": false,
+        "panel": {
+          "statusReports": {
+            "expanded": true
+          },
+          "modalGroups": {
+            "expanded": true
+          }
+        }
+      },
+      "spindle": {
+        "minimized": false,
+        "speed": 1000
+      },
+      "tinyg": {
+        "minimized": false,
+        "panel": {
+          "powerManagement": {
+            "expanded": false
+          },
+          "queueReports": {
+            "expanded": true
+          },
+          "statusReports": {
+            "expanded": true
+          },
+          "modalGroups": {
+            "expanded": true
+          }
+        }
+      },
+      "visualizer": {
+        "minimized": false,
+        "disabled": true,
+        "projection": "orthographic",
+        "cameraMode": "pan",
+        "gcode": {
+          "displayName": true
+        },
+        "objects": {
+          "limits": {
+            "visible": true
+          },
+          "coordinateSystem": {
+            "visible": true
+          },
+          "gridLineNumbers": {
+            "visible": true
+          },
+          "toolhead": {
+            "visible": true
+          }
+        }
+      },
+      "webcam": {
+        "disabled": true,
+        "minimized": false,
+        "mediaSource": "local",
+        "deviceId": "",
+        "url": "",
+        "geometry": {
+          "scale": 1,
+          "rotation": 0,
+          "flipHorizontally": false,
+          "flipVertically": false
+        },
+        "crosshair": false,
+        "muted": false
+      }
+    }
+  }
+}
