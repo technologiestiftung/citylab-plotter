@@ -2,7 +2,7 @@ import canvg from 'canvg';
 // import fs, { PathLike } from 'fs';
 import Gcanvas from 'gcanvas';
 import { Stream } from 'stream';
-import { GCodeCommands, IDefaultOptions, IObject, ISvgcode } from './common';
+import { GCodeCommands, ICanvgDefaultOptions, IObject, ISvgcode } from './common';
 
 // totally ripped from
 // https://github.com/piLeoni/svgcode
@@ -15,7 +15,11 @@ import { GCodeCommands, IDefaultOptions, IObject, ISvgcode } from './common';
 //   toolDiameter?: number;
 // }
 
-export const svgcode = () => {
+export const svgcode = (
+  doFloor: boolean = true,
+  doDedupe: boolean = true,
+  feedRate: number = 3125,
+  canvgOpts?: ICanvgDefaultOptions) => {
   const output2Array: (target: string[]) => any = (target) => {
     return {
       write(cmd: any) {
@@ -23,8 +27,7 @@ export const svgcode = () => {
       },
     };
   };
-
-  const defaultOptions: IDefaultOptions = {
+  const gcanvDefaultOptions: ICanvgDefaultOptions = {
     depth: 10,
     map: 'xyz',
     precision: 1,
@@ -32,8 +35,9 @@ export const svgcode = () => {
     toolDiameter: 0,
     top: -10,
     unit: 'mm',
-    doFloor: true,
   };
+
+  const opts = Object.assign(gcanvDefaultOptions, canvgOpts);
 
   const obj: ISvgcode = {
     gCode: [],
@@ -66,7 +70,7 @@ export const svgcode = () => {
     },
     getGcode() {
       this.gCode.splice(3, 0, GCodeCommands.lift); // insert a lift at start after the first three elements
-      this.gCode.splice(4, 0, GCodeCommands.feedrate5000); // insert a lift at start after the first three elements
+      this.gCode.splice(4, 0, feedRate.toString()); // insert a lift at start after the first three elements
       this.gCode.push(GCodeCommands.lift); // left the pen at the end
       this.gCode.push(GCodeCommands.goHome); // Go Home again
       // now we patch some pen down so we don't hit the switch
@@ -76,13 +80,12 @@ export const svgcode = () => {
       // this.gCode.forEach((ele, i, arr) => {
       //   arr[i] = ele.replace('G1 Z3', 'G0 Z10');
       // });
-      if(doFloor === true){
-
+      if (doFloor !== undefined && doFloor === true) {
         this.gCode.forEach((ele, i, arr) => {
           arr[i] = ele.replace(/([X,Y,Z,x,y,z]\d{1,4})([.]\d{1,6})/g, '$1');
         });
       }
-        this.gCode.forEach((ele, i, arr) => {
+      this.gCode.forEach((ele, i, arr) => {
         arr[i] = ele.replace(/([Y,y]\d{1,4})\ [Z]\d$/g, '$1');
       });
 
@@ -92,11 +95,13 @@ export const svgcode = () => {
           i--;
         }
       }
-      for (let i = 0; i < this.gCode.length; i++) {
-        if (i < this.gCode.length - 1) {
-          if (this.gCode[i] === this.gCode[i + 1]) {
-            this.gCode.splice(i, 1);
-            i--;
+      if (doDedupe === true) {
+        for (let i = 0; i < this.gCode.length; i++) {
+          if (i < this.gCode.length - 1) {
+            if (this.gCode[i] === this.gCode[i + 1]) {
+              this.gCode.splice(i, 1);
+              i--;
+            }
           }
         }
       }
@@ -114,6 +119,6 @@ export const svgcode = () => {
     },
   };
   obj.setDriver(output2Array(obj.gCode));
-  obj.setOptions(defaultOptions);
+  obj.setOptions(opts);
   return obj;
 };

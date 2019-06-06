@@ -1,8 +1,9 @@
+import { ISvgcode } from './index';
 export interface IObject {
   [key: string]: any;
 }
 
-export interface IDefaultOptions {
+export interface ICanvgDefaultOptions {
   depth?: number;
   precision?: number;
   ramping?: boolean;
@@ -10,9 +11,16 @@ export interface IDefaultOptions {
   unit?: 'mm'| 'inch';
   map?: string;
   top?: number;
-  dooFloor?: boolean;
+  doFloor?: boolean;
 }
-
+export interface ISvgcodeOpts {
+  doFloor?: boolean;
+  doDedupe?: boolean;
+}
+export interface IOptions {
+  canvgOpts: ICanvgDefaultOptions;
+  svgcodeOpts: ISvgcodeOpts;
+}
 export enum GCodeCommands {
   lift = 'G0 Z10',
   feedrate5000 = 'F5000',
