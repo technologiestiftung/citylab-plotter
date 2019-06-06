@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { svgcode } from '@tsb/svgcode';
-// import { svgcode } from '../../svgcode/dist/index';
+// import { svgcode } from '@tsb/svgcode';
+import { svgcode } from '../../svgcode/dist/index';
 
 import chalk from 'chalk';
 import fs from 'fs';
@@ -18,7 +18,7 @@ const readFileAsync = util.promisify(fs.readFile);
 const main = async () => {
 
   const cli = meow(`
-  Usage: node cli.js ./path/to/infile.svg [./path/to/outfile.gc] [FLAGS]
+  Usage: svgcode ./path/to/infile.svg [./path/to/outfile.gc] [FLAGS]
 
   Options:
     -c --config {string} Path to config.json

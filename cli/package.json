@@ -4,7 +4,7 @@
   },
   "preferGlobal": true,
   "name": "@tsb/svgcode-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Commandline interface for @tsb/svgcode. Written for CityLAB Berlin plotting",
   "main": "dist/cli.js",
   "scripts": {
@@ -17,7 +17,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@tsb/svgcode": "^0.4.0",
+    "@tsb/svgcode": "^0.4.1",
     "chalk": "^2.4.2",
     "meow": "^5.0.0"
   },
