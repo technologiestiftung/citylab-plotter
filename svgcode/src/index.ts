@@ -14,6 +14,8 @@ import { GCodeCommands, ICanvgDefaultOptions, IObject, ISvgcode } from './common
 //   ramping?: boolean;
 //   toolDiameter?: number;
 // }
+// tslint:disable-next-line: prefer-const
+let doRmZends: boolean = true;
 
 export const svgcode = (
   doFloor: boolean = true,
@@ -70,11 +72,11 @@ export const svgcode = (
     },
     getGcode() {
       this.gCode.splice(3, 0, GCodeCommands.lift); // insert a lift at start after the first three elements
-      this.gCode.splice(4, 0, feedRate.toString()); // insert a lift at start after the first three elements
+      this.gCode.splice(4, 0, `F${feedRate.toString()}`); // insert a lift at start after the first three elements
       this.gCode.push(GCodeCommands.lift); // left the pen at the end
       this.gCode.push(GCodeCommands.goHome); // Go Home again
       // now we patch some pen down so we don't hit the switch
-      this.gCode.forEach((ele, i, arr) => {
+      this.gCode.forEach((ele, i) => {
         this.gCode[i] = ele.replace('Z0', 'Z3');
       });
       // this.gCode.forEach((ele, i, arr) => {
@@ -82,12 +84,15 @@ export const svgcode = (
       // });
       if (doFloor !== undefined && doFloor === true) {
         this.gCode.forEach((ele, i, arr) => {
-          arr[i] = ele.replace(/([X,Y,Z,x,y,z]\d{1,4})([.]\d{1,6})/g, '$1');
+          arr[i] = ele.replace(/([X,Y,Z,x,y,z]\d{1,6})([.]\d{1,6})/g, '$1');
         });
       }
-      this.gCode.forEach((ele, i, arr) => {
-        arr[i] = ele.replace(/([Y,y]\d{1,4})\ [Z]\d$/g, '$1');
-      });
+      if (doRmZends === true) {
+        const reg = doFloor === true ? /([Y,y]\d{1,4})\ [Z]\d$/g : /([Y,y]\d{1,6}[.]\d{0,10})\ [Z]\d$/g;
+        this.gCode.forEach((ele, i, arr) => {
+          arr[i] = ele.replace(reg, '$1');
+        });
+      }
 
       for (let i = 0; i < this.gCode.length; i++) {
         if (this.gCode[i].match(/\(.*?\)/) !== null) {
