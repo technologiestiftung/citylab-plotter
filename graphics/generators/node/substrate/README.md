@@ -1,6 +1,6 @@
 # substrate
 
-![image that shows the result](./docs/substrate.png)
+![An image that shows the result of the algorithm](https://raw.githubusercontent.com/technologiestiftung/citylab-plotter/master/graphics/generators/node/substrate/docs/substrate.png)
 
 ```plain
 _    |_  _ _|_ __ _ _|_ _
