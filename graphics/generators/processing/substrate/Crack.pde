@@ -25,6 +25,7 @@ class Crack {
     while ((!found) || (timeout++ > 1000)) {
       px = int(random(dimx));
       py = int(random(dimy));
+      //println(cgrid[py*dimx+px]);
       if (cgrid[py*dimx+px] < 10000) {
         found = true;
       }
@@ -79,9 +80,7 @@ class Crack {
 
     //constrain to area
     if ((cx>=0) && (cx<dimx) && (cy>=0) && (cy<dimy)) {
-
       // safe to check
-
       if ((cgrid[cy*dimx+cx]>10000) || (abs(cgrid[cy*dimx+cx]-t)<5)) {
         // continue cracking
         cgrid[cy*dimx+cx]=int(t);

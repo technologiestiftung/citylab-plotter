@@ -129,7 +129,7 @@ void begin() {
     cgrid[i]=int(random(360));
   }
 
-  // make just three cracks
+  // make just ten cracks
   num=0;
   for (int k=0; k<10; k++) {
 
