@@ -22,7 +22,7 @@ based on http://www.complexification.net/gallery/machines/substrate/
 by Jared S Tarbell @jaredtarbell
 
 written for CityLAB Berlin
-by Fabian Morón Zirfas
+by Fabian Morón Zirfas @fabianmoronzifas
 `;
 const cli = meow_1.default(`
 ${banner}
@@ -78,11 +78,11 @@ const dimy = height;
 // const cgrid: number[] = [];
 if (cli.input[0] === undefined) {
     // spinner.text = `No path for the output given. I will use ${outFilePath}`;
-    // spinner.start();
     spinner.fail('Please provide an output path');
     cli.showHelp();
 }
 else {
+    spinner.start();
     try {
         if (fs_1.default.existsSync(path_1.default.dirname(cli.input[0])) === true) {
             outFilePath = path_1.default.resolve(process.cwd(), cli.input[0]);
