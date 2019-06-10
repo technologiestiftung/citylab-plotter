@@ -1,4 +1,8 @@
 {
+  "bin": {
+    "substrate": "./dist/index.js"
+  },
+  "preferGlobal": true,
   "name": "@tsb/substrate",
   "version": "0.1.0",
   "description": "",
@@ -7,6 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsc -p . -w",
     "build": "tsc -p .",
+    "prepare": "npm run build",
     "nodemon": "nodemon"
   },
   "keywords": [

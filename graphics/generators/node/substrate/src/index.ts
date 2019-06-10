@@ -1,4 +1,4 @@
-
+#!/usr/bin/env node
 import fs from 'fs';
 import gameloop from 'node-gameloop';
 import path from 'path';
@@ -9,17 +9,29 @@ import { createCanvas } from 'canvas';
 import meow from 'meow';
 import ora from 'ora';
 const spinner = ora('substrate(ing)');
-spinner.start();
+const banner = `
+_    |_  _ _|_ __ _ _|_ _
+_> |_||_)_>  |_ | (_| |_(/_
+
+based on http://www.complexification.net/gallery/machines/substrate/
+by Jared S Tarbell @jaredtarbell
+
+written for CityLAB Berlin
+by Fabian Morón Zirfas
+`;
 const cli = meow(`
+${banner}
+
   Usage:
-    node dist/index.js input [flags]
-    node dist/index.js path/to/outfile.svg --duration 60
-    node dist/index.js path/to/outfile.svg --duration 60 --width 841 --height 1149
-    node dist/index.js path/to/outfile.svg --duration 60 --width 841 --height 1149 --maxcracks 200
+    $ substrate input [flags]
+    $ substrate path/to/outfile.svg --duration 60
+    $ substrate path/to/outfile.svg --duration 60 --width 841 --height 1149
+    $ substrate path/to/outfile.svg --duration 60 --width 841 --height 1149 --maxcracks 200
+
   Flags:
-    --duration -d {string} Duration tu run the substrate in seconds. Default: 60
-    --height -h {string} Height of the output svg. Default: 1189 (A0 if 1px === 1mm)
-    --width -w {string} Width of the output svg. Default: 841 (A0 if 1px === 1mm)
+    --duration  -d {string} Duration tu run the substrate in seconds. Default: 60
+    --height    -h {string} Height of the output svg. Default: 1189 (A0 if 1px === 1mm)
+    --width     -w {string} Width of the output svg. Default: 841 (A0 if 1px === 1mm)
     --maxcracks -m {string} Maximum number of cracks computed in parallel. Default: 200
     `, {
     flags: {
@@ -65,8 +77,10 @@ const dimy = height;
 // const cgrid: number[] = [];
 
 if (cli.input[0] === undefined) {
-  console.info(`No path for the output given. I will use ${outFilePath}`);
-  // cli.showHelp();
+  // spinner.text = `No path for the output given. I will use ${outFilePath}`;
+  // spinner.start();
+  spinner.fail('Please provide an output path');
+  cli.showHelp();
 } else {
   try {
     if (fs.existsSync(path.dirname(cli.input[0])) === true) {
@@ -76,7 +90,7 @@ if (cli.input[0] === undefined) {
     // tslint:disable-next-line: no-console
     // console.error(error);
     // tslint:disable-next-line: no-console
-    console.error(`Outputpath can not be set. I will use ${outFilePath}`);
+    spinner.text = `Outputpath can not be set. I will use ${outFilePath}`;
 
   }
 }
@@ -130,10 +144,7 @@ const id = gameloop.setGameLoop((delta: number) => {
   // `delta` is the delta time from the last frame
   frameCount++;
   spinner.text = `
-   _    |_  _ _|_ __ _ _|_ _
-  _> |_||_)_>  |_ | (_| |_(/_
-  based on http://www.complexification.net/gallery/machines/substrate/
-  by Jared S Tarbell @jaredtarbell
+${banner}
 
   substrate(ing) @ framerate ${frameRate} frame=${frameCount}
   width    ${width}
