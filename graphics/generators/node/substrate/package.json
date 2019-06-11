@@ -4,8 +4,8 @@
   },
   "preferGlobal": true,
   "name": "@tsb/substrate",
-  "version": "0.1.2",
-  "description": "![image that shows the result](./docs/substrate.png)",
+  "version": "0.2.0",
+  "description": "Genrative cli tool - based on http://www.complexification.net/gallery/machines/\nsubstrate/\nby Jared S Tarbell @jaredtarbell\nritten for CityLAB Berlin\nby Fabian Morón Zirfas @fabianmoronzifas",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
