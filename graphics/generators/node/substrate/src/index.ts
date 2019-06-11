@@ -8,6 +8,7 @@ const store = Store.getInstance();
 import { createCanvas } from 'canvas';
 import meow from 'meow';
 import ora from 'ora';
+import { IVector } from './common';
 const spinner = ora('substrate(ing)');
 const banner = `
 _    |_  _ _|_ __ _ _|_ _
@@ -27,12 +28,14 @@ ${banner}
     $ substrate path/to/outfile.svg --duration 60
     $ substrate path/to/outfile.svg --duration 60 --width 841 --height 1149
     $ substrate path/to/outfile.svg --duration 60 --width 841 --height 1149 --maxcracks 200
-
+    $ substrate path/to/outfile.svg --duration 60 --width 841 --height 1149 --maxcracks 200 --linefilter 5
   Flags:
     --duration  -d {string} Duration tu run the substrate in seconds. Default: 60
     --height    -h {string} Height of the output svg. Default: 1189 (A0 if 1px === 1mm)
     --width     -w {string} Width of the output svg. Default: 841 (A0 if 1px === 1mm)
     --maxcracks -m {string} Maximum number of cracks computed in parallel. Default: 200
+    --linefilter -l {string} Minimum line length to take in account.
+        Everything shorter will not be calculated. 1px === 1mm
     `, {
     flags: {
       duration: {
@@ -43,6 +46,10 @@ ${banner}
       height: {
         alias: 'h',
         default: 1189,
+        type: 'string',
+      },
+      linefilter: {
+        alias: 'l',
         type: 'string',
       },
       maxcracks: {
@@ -63,6 +70,7 @@ const duration = typeof cli.flags.duration === 'string' ? parseFloat(cli.flags.d
 const width = typeof cli.flags.width === 'string' ? parseInt(cli.flags.width, 10) : cli.flags.width;
 const height = typeof cli.flags.height === 'string' ? parseInt(cli.flags.height, 10) : cli.flags.height;
 const maxcracks = typeof cli.flags.maxcracks === 'string' ? parseInt(cli.flags.maxcracks, 10) : cli.flags.maxcracks;
+const linefilter = cli.flags.linefilter !== undefined ? parseInt(cli.flags.linefilter, 10) : undefined;
 
 const canvas = createCanvas(width, height, 'svg');
 const ctx = canvas.getContext('2d');
@@ -107,6 +115,18 @@ export const makeCrack = () => {
   // console.log(store.cracks);
 };
 
+const lineDistance = (point1: IVector, point2: IVector) => {
+  let xs = 0;
+  let ys = 0;
+
+  xs = point2.x - point1.x;
+  xs = xs * xs;
+
+  ys = point2.y - point1.y;
+  ys = ys * ys;
+  return Math.sqrt(xs + ys);
+};
+
 const begin = () => {
   // erase crack grid
   for (let y = 0; y < dimy; y++) {
@@ -147,11 +167,12 @@ const id = gameloop.setGameLoop((delta: number) => {
 ${banner}
 
   substrate(ing) @ framerate ${frameRate} frame=${frameCount}
-  width    ${width}
-  height   ${height}
-  duration ${duration}s
-  maxnum   ${maxcracks}
-  output 2 ${outFilePath}
+  width      ${width}
+  height     ${height}
+  duration   ${duration}s
+  maxnum     ${maxcracks}
+  linefilter ${linefilter}
+  output 2   ${outFilePath}
   `;
 
   for (let n = 0; n < crackCounter; n++) {
@@ -168,6 +189,9 @@ setTimeout(() => {
   gameloop.clearGameLoop(id);
   // console.log('traces', store.traces);
   for (const t of store.traces) {
+    if (linefilter !== undefined && lineDistance(t.start, t.end) < linefilter) {
+      continue;
+    }
     ctx.beginPath();
     ctx.moveTo(t.start.x, t.start.y);
     ctx.lineTo(t.end.x, t.end.y);
